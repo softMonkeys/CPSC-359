@@ -1,0 +1,114 @@
+
+build/output.elf:     file format elf32-littlearm
+
+
+Disassembly of section .init:
+
+00008000 <_start>:
+    8000:	ea00043a 	b	90f0 <main>
+
+Disassembly of section .text:
+
+000090f0 <main>:
+    90f0:	e3a0d902 	mov	sp, #32768	; 0x8000
+    90f4:	eb00000e 	bl	9134 <EnableJTAG>
+    90f8:	eb000030 	bl	91c0 <InitFrameBuffer>
+    90fc:	e3a00064 	mov	r0, #100	; 0x64
+    9100:	e3a01064 	mov	r1, #100	; 0x64
+    9104:	e3a02a0f 	mov	r2, #61440	; 0xf000
+    9108:	eb000000 	bl	9110 <DrawPixel>
+
+0000910c <haltLoop$>:
+    910c:	eafffffe 	b	910c <haltLoop$>
+
+00009110 <DrawPixel>:
+    9110:	e52d4004 	push	{r4}		; (str r4, [sp, #-4]!)
+    9114:	e0804501 	add	r4, r0, r1, lsl #10
+    9118:	e1a04084 	lsl	r4, r4, #1
+    911c:	e59f000c 	ldr	r0, [pc, #12]	; 9130 <DrawPixel+0x20>
+    9120:	e5900000 	ldr	r0, [r0]
+    9124:	e18020b4 	strh	r2, [r0, r4]
+    9128:	e49d4004 	pop	{r4}		; (ldr r4, [sp], #4)
+    912c:	e12fff1e 	bx	lr
+    9130:	000090e0 	.word	0x000090e0
+
+00009134 <EnableJTAG>:
+    9134:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    9138:	e59f0064 	ldr	r0, [pc, #100]	; 91a4 <dowaitloop+0xc>
+    913c:	e0211001 	eor	r1, r1, r1
+    9140:	e5801000 	str	r1, [r0]
+    9144:	eb000012 	bl	9194 <dowait>
+    9148:	e59f0058 	ldr	r0, [pc, #88]	; 91a8 <dowaitloop+0x10>
+    914c:	e59f1058 	ldr	r1, [pc, #88]	; 91ac <dowaitloop+0x14>
+    9150:	e5801000 	str	r1, [r0]
+    9154:	eb00000e 	bl	9194 <dowait>
+    9158:	e0211001 	eor	r1, r1, r1
+    915c:	e5801000 	str	r1, [r0]
+    9160:	e59f0048 	ldr	r0, [pc, #72]	; 91b0 <dowaitloop+0x18>
+    9164:	e5901000 	ldr	r1, [r0]
+    9168:	e3c11a07 	bic	r1, r1, #28672	; 0x7000
+    916c:	e3811a02 	orr	r1, r1, #8192	; 0x2000
+    9170:	e5801000 	str	r1, [r0]
+    9174:	e59f0038 	ldr	r0, [pc, #56]	; 91b4 <dowaitloop+0x1c>
+    9178:	e5901000 	ldr	r1, [r0]
+    917c:	e59f2034 	ldr	r2, [pc, #52]	; 91b8 <dowaitloop+0x20>
+    9180:	e1c11002 	bic	r1, r1, r2
+    9184:	e59f2030 	ldr	r2, [pc, #48]	; 91bc <dowaitloop+0x24>
+    9188:	e1811002 	orr	r1, r1, r2
+    918c:	e5801000 	str	r1, [r0]
+    9190:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+00009194 <dowait>:
+    9194:	e3a02f4b 	mov	r2, #300	; 0x12c
+
+00009198 <dowaitloop>:
+    9198:	e2522001 	subs	r2, r2, #1
+    919c:	1afffffd 	bne	9198 <dowaitloop>
+    91a0:	e12fff1e 	bx	lr
+    91a4:	3f200094 	.word	0x3f200094
+    91a8:	3f200098 	.word	0x3f200098
+    91ac:	0bc00010 	.word	0x0bc00010
+    91b0:	3f200000 	.word	0x3f200000
+    91b4:	3f200008 	.word	0x3f200008
+    91b8:	00e3ffc0 	.word	0x00e3ffc0
+    91bc:	0061b6c0 	.word	0x0061b6c0
+
+000091c0 <InitFrameBuffer>:
+    91c0:	e59f2068 	ldr	r2, [pc, #104]	; 9230 <pointerWaitLoop$+0x1c>
+    91c4:	e59f3068 	ldr	r3, [pc, #104]	; 9234 <pointerWaitLoop$+0x20>
+
+000091c8 <mBoxFullLoop$>:
+    91c8:	e5920018 	ldr	r0, [r2, #24]
+    91cc:	e3100102 	tst	r0, #-2147483648	; 0x80000000
+    91d0:	1afffffc 	bne	91c8 <mBoxFullLoop$>
+    91d4:	e2830101 	add	r0, r3, #1073741824	; 0x40000000
+    91d8:	e3800008 	orr	r0, r0, #8
+    91dc:	e5820020 	str	r0, [r2, #32]
+
+000091e0 <mBoxEmptyLoop$>:
+    91e0:	e5920018 	ldr	r0, [r2, #24]
+    91e4:	e3100101 	tst	r0, #1073741824	; 0x40000000
+    91e8:	1afffffc 	bne	91e0 <mBoxEmptyLoop$>
+    91ec:	e5920000 	ldr	r0, [r2]
+    91f0:	e200100f 	and	r1, r0, #15
+    91f4:	e3310008 	teq	r1, #8
+    91f8:	1afffff8 	bne	91e0 <mBoxEmptyLoop$>
+    91fc:	e59f0030 	ldr	r0, [pc, #48]	; 9234 <pointerWaitLoop$+0x20>
+    9200:	e5901004 	ldr	r1, [r0, #4]
+    9204:	e3310102 	teq	r1, #-2147483648	; 0x80000000
+    9208:	0a000001 	beq	9214 <pointerWaitLoop$>
+    920c:	13a00000 	movne	r0, #0
+    9210:	112fff1e 	bxne	lr
+
+00009214 <pointerWaitLoop$>:
+    9214:	e59f001c 	ldr	r0, [pc, #28]	; 9238 <pointerWaitLoop$+0x24>
+    9218:	e5900000 	ldr	r0, [r0]
+    921c:	e3300000 	teq	r0, #0
+    9220:	0afffffb 	beq	9214 <pointerWaitLoop$>
+    9224:	e59f3010 	ldr	r3, [pc, #16]	; 923c <pointerWaitLoop$+0x28>
+    9228:	e5830000 	str	r0, [r3]
+    922c:	e12fff1e 	bx	lr
+    9230:	3f00b880 	.word	0x3f00b880
+    9234:	00009080 	.word	0x00009080
+    9238:	000090cc 	.word	0x000090cc
+    923c:	000090e0 	.word	0x000090e0

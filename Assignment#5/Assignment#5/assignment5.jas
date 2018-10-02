@@ -1,0 +1,612 @@
+// The JAS program that contains 5 methods:
+// 1. print
+// 2. getnum
+// 3. divCount
+// 4. idiv
+// 5. isMul
+// Created by: BENKUN CHEN (30005337) & Jiongkai Jiang (10138743)
+
+.constant
+	OBJREF 0x40			// needed for method invokation - see S.C.O. chapter 4
+.end-constant
+
+// start of program
+.main
+
+.var				// local variables for main program
+a
+b
+int1
+int2
+return_type
+int1_isMul
+int2_isMul
+
+total
+.end-var
+
+start:
+// print "================"
+	BIPUSH 0x3d
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	BIPUSH 0xa		// start a new
+	OUT
+
+// print "Number of divisors"
+	BIPUSH 0x4E		// N
+	OUT
+	BIPUSH 0x75		// u
+	OUT
+	BIPUSH 0x6D		// m
+	OUT
+	BIPUSH 0x62		// b
+	OUT
+	BIPUSH 0x65		// e
+	OUT
+	BIPUSH 0x72		// r
+	OUT
+	BIPUSH 0x20		// " "
+	OUT
+	BIPUSH 0x6F		// o
+	OUT
+	BIPUSH 0x66		// f
+	OUT
+	BIPUSH 0x20		// " "
+	OUT
+	BIPUSH 0x64		// d
+	OUT
+	BIPUSH 0x69		// i
+	OUT
+	BIPUSH 0x76		// v
+	OUT
+	BIPUSH 0x69		// i
+	OUT
+	BIPUSH 0x73		// s
+	OUT
+	BIPUSH 0x6F		// o
+	OUT
+	BIPUSH 0x72		// r
+	OUT
+	BIPUSH 0x73		// s
+	OUT
+	BIPUSH 0xa		// start a new
+	OUT
+
+	BIPUSH 0x00		// initialize variables a and b
+	ISTORE a
+
+	LDC_W OBJREF		// prepare for method call
+	INVOKEVIRTUAL getnum
+	ISTORE a		// store re turn value in a
+
+	LDC_W OBJREF		// prepare for method call
+	ILOAD a
+	ISTORE int1
+	ILOAD int1
+	INVOKEVIRTUAL divCount
+	ISTORE a		// store return value in a
+
+	LDC_W OBJREF		// prepare for method call
+	ILOAD a
+	INVOKEVIRTUAL print
+
+	// print "Is multiple?"
+	BIPUSH 0x49		// I
+	OUT
+	BIPUSH 0x73		// s
+	OUT
+	BIPUSH 0x20		// " "
+	OUT
+	BIPUSH 0x6D		// m
+	OUT
+	BIPUSH 0x6C		// l
+	OUT
+	BIPUSH 0x74		// t
+	OUT
+	BIPUSH 0x69		// i
+	OUT
+	BIPUSH 0x70		// p
+	OUT
+	BIPUSH 0x6C		// l
+	OUT
+	BIPUSH 0x65		// e
+	OUT
+	BIPUSH 0x3F		// ?
+	OUT
+	BIPUSH 0xa		// start a new
+	OUT
+
+	BIPUSH 0x0		// initialize var a and b
+	DUP
+	ISTORE a
+	ISTORE b
+	LDC_W OBJREF		// prepare for method call
+	INVOKEVIRTUAL getnum
+	ISTORE a		// store return value in a
+
+	LDC_W OBJREF
+	INVOKEVIRTUAL getnum
+	ISTORE b		// store return value in b
+
+
+	LDC_W OBJREF		// prepare for method call
+	ILOAD a
+	ISTORE int1_isMul
+	ILOAD int1_isMul
+	ILOAD b
+	ISTORE int2_isMul
+	ILOAD int2_isMul
+
+	INVOKEVIRTUAL isMul
+	ISTORE a		// store return value in a
+
+	LDC_W OBJREF		// prepare for method call
+	ILOAD a
+	INVOKEVIRTUAL print
+
+
+	GOTO start
+
+.end-main
+
+
+// -----------------------------------------------------------------------------/
+// Section for the print-------------------------------------------------------/
+.method print( total ) 		// print converts a number into a string of
+				//   characters and prints them.  All of the characters
+				//   are pushed onto the stack, least significant
+				//   digit first, then popped off and printed.
+.var
+place
+index
+.end-var
+
+print: 	BIPUSH 0x9		// there are 8 nibbles in each integer--setting
+				//   this as nine pushes 10 characters onto the
+ 				//   stack, thus a total of ten printed digits,
+				//   but setting this less does not remove the
+				//   two leading zeros, just removes significant
+				//   digits
+	ISTORE index
+	BIPUSH 0x1		// comparison bit
+	ISTORE place
+print1:	BIPUSH 0x0
+	ILOAD index		// index = index - 1
+	BIPUSH 0x1
+	ISUB
+	DUP
+	IFEQ pall		// if index = 0  goto pall
+	ISTORE index
+	ILOAD total		// else
+	ILOAD place		//
+	IAND			//   if 1st bit of current nibble is zero (total & place)
+	IFEQ print2		//     goto print2
+	BIPUSH 0x1		//   else set first bit of character
+	IADD
+print2: ILOAD place		//   place = place << 1
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			//   if 2nd bit of current nibble is zero (total & place)
+	IFEQ print3		//     goto print3
+	BIPUSH 0x2		//   else set second bit of character
+	IADD
+print3: ILOAD place		//   place = place << 1
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			//   if 3rd bit of current nibble is zero (total & place)
+	IFEQ print4		//     goto print4
+	BIPUSH 0x4		//   else set second bit of character
+	IADD
+print4: ILOAD place		//   place = place << 1
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			//   if 4th bit of current nibble is zero (total & place)
+	IFEQ print5		//     goto print5
+	BIPUSH 0x8		//   else set second bit of character
+	IADD
+print5: ILOAD place		//   place = place << 1
+	DUP
+	IADD
+	ISTORE place
+	GOTO print1
+
+pall:   POP			// Pop off leading 0's
+	POP
+	BIPUSH 0x9
+	ISTORE index
+pall1:	ILOAD index		// index = index - 1
+	BIPUSH 0x1
+	ISUB
+	DUP
+	IFEQ return		// if index = 0  return
+	ISTORE index
+	DUP
+	BIPUSH 0xa		// else if character < 0xa goto pall1
+	ISUB
+	IFLT pall2
+	BIPUSH 0x37		// else convert character to "A"-"F"
+	IADD
+	OUT			// print character
+	GOTO pall1		// goto pall (prepare & print next character)
+pall2:	BIPUSH 0x30		// convert character to "0"-"9"
+	IADD
+	OUT			// print character
+	GOTO pall1		// goto pall1 (prepare & print next character)
+return:	BIPUSH 0xa		// print cr
+	OUT
+	IRETURN			// no return value
+.end-method
+// -----------------------------------------------------------------------------/
+
+
+
+// -----------------------------------------------------------------------------/
+// Section for the getnum-------------------------------------------------------/
+.method getnum()
+.var
+a
+negative
+.end-var
+
+	BIPUSH 0x0		// initialize a
+  ISTORE a
+
+///////////////////
+	BIPUSH 0x0		// initialize negative
+	ISTORE negative
+///////////////////
+
+geta:
+	IN			// read key press
+	DUP			// duplicate key for comparison
+	BIPUSH 0xa		// if key = cr,
+	IF_ICMPEQ return	//   return
+	DUP
+
+///////////////////
+	BIPUSH 0x2d		// ascii value for '-'
+	IF_ICMPEQ is_negative		// if it is equal, branch to is negative
+	DUP
+///////////////////
+
+	BIPUSH 0x30		// if key < "0"
+	ISUB			//
+	IFLT geta4		//   goto geta4 (key is not a hex digit)
+    	DUP
+	BIPUSH 0x3a		// else if key < ":"
+	ISUB			//
+	IFLT geta2		//   goto geta2 (key is numeric character - "0"-"9")
+	DUP
+	BIPUSH 0x41		// else if key < "A"
+	ISUB			//
+	IFLT geta4		//   goto geta4 (key is not a hex digit)
+	DUP
+	BIPUSH 0x46		// else if key > "F"
+	SWAP			//
+	ISUB			//
+	IFLT geta4		//   goto geta4 (key is not a hex digit)
+	DUP			// else (key is letter - "A"-"F")
+	OUT			//   print key
+	BIPUSH 0x37		//   convert key from character to number
+	ISUB			//
+	GOTO geta3		//   goto geta3
+geta2:  DUP
+	OUT			// print key (numeric character)
+	BIPUSH 0x30		// convert key from character to number
+	ISUB
+geta3:  ILOAD a			// shift a left 8 bits
+	DUP
+	IADD
+	DUP
+	IADD
+	DUP
+	IADD
+	DUP
+	IADD
+	IADD			// add key to a
+	ISTORE a
+	GOTO geta		// get next key
+
+geta4:
+	POP			// pop invalid character
+	GOTO geta		// get next key
+
+///////////////////
+is_negative:
+	OUT
+	BIPUSH 1
+	ISTORE negative
+	GOTO geta
+///////////////////
+
+return:
+	OUT			// print cr
+///////////////////
+	ILOAD	negative
+	IFEQ not_negative		// if flag equals to 0, it is not negative
+	ILOAD a
+	INEG		// take the negation
+	ISTORE a
+not_negative:
+///////////////////
+	ILOAD a			// load a as return value
+	IRETURN			// return
+.end-method
+// -----------------------------------------------------------------------------/
+
+
+
+// -----------------------------------------------------------------------------/
+// Section for the idiv---------------------------------------------------------/
+// this method divides int1 by int2, if return_type = 0, return quotient, else,
+// return remainder
+.method	idiv( int1,int2,return_type )
+
+.var
+abs_int1
+abs_int2
+q		// quotient
+r		// remainder
+.end-var
+	ILOAD	int1
+	DUP
+	IFLT abs1		// if int1 is less than 0, negate it
+	ISTORE abs_int1		// if not, store it into abs_int1
+	GOTO check_int2
+abs1:
+	INEG
+	ISTORE abs_int1
+check_int2:
+	ILOAD int2
+	DUP
+	IFLT abs2		// if int2 is less than 0, negate it
+	ISTORE abs_int2		// if not, store it into abs_int2
+	GOTO finishChecking
+abs2:
+	INEG
+	ISTORE abs_int2
+finishChecking:
+	BIPUSH 0
+	ISTORE q		// q(quotient) = 0
+
+	ILOAD abs_int1
+	ISTORE r		// r(remainder) = abs_int1
+
+check:
+	ILOAD r
+	ILOAD abs_int2
+	ISUB
+	IFLT endWhile		// when r is smaller than abs_int2, end the while loop
+whileLoop:
+	ILOAD r
+	ILOAD abs_int2
+	ISUB
+	ISTORE r		// r = r - abs_int2
+	IINC q 1		// q++
+	GOTO check
+endWhile:
+
+	ILOAD int1
+	IFLT check_int2_negative
+	GOTO check_int2_negative_when_int1_positive
+
+check_int2_negative:
+	ILOAD int2
+	IFLT skip_nagative
+	GOTO make_q_nagative
+
+check_int2_negative_when_int1_positive:
+	ILOAD int2
+	IFLT make_q_nagative
+	GOTO skip_nagative
+
+make_q_nagative:
+	ILOAD q
+	INEG
+
+skip_nagative:
+	ILOAD return_type
+	IFEQ returnQ		// if return_type = 0, return q
+	ILOAD r
+	IRETURN		// else, return r
+returnQ:
+	ILOAD q
+	IRETURN		// return q
+
+.end-method
+// -----------------------------------------------------------------------------/
+
+
+
+// -----------------------------------------------------------------------------/
+// Section for the divCount-----------------------------------------------------/
+// this method returns the number of divisors for int1
+.method	divCount( int1 )
+
+.var
+int1
+int2
+return_type
+limit
+numberOfDivisors
+j
+absolute_int1
+.end-var
+
+	BIPUSH 1
+	ISTORE j		// j = 0
+
+	ILOAD int1		// load the value of int1
+	DUP		// copy top word on the stack and push onto stack
+	IFLT abs_int1_divisors		// if int1 < 0, take the absolute value
+	ISTORE limit		// it not, just store it into "limit"
+	GOTO next_divisors
+abs_int1_divisors:
+	INEG		// take the negation
+	ISTORE limit		// store it into "limit"
+next_divisors:
+
+	ILOAD limit
+	ISTORE absolute_int1	// copy the value in limit into abs(int1)
+
+	BIPUSH 0
+	ISTORE numberOfDivisors		// int numberOfDivisors = 0
+
+	BIPUSH 1
+	ILOAD	absolute_int1
+	IF_ICMPEQ return_1		// if (abs(int1) == 1) return 1
+	GOTO dont_return
+return_1:
+	BIPUSH 1
+	IRETURN		// reutn 1
+dont_return:
+
+	ILOAD j
+	ILOAD limit
+	ISUB
+	IFLT for_body_divisors
+	GOTO jump_out		// if j >= limit, jump out of the for loop
+for_body_divisors:
+// if (abs(int1) % j ==0)
+	LDC_W OBJREF		// prepare for method call
+	// initialize int1
+	ILOAD absolute_int1
+	ISTORE int1
+	ILOAD int1
+	// initialize int2
+	ILOAD j
+	ISTORE int2
+	ILOAD int2
+	// initialize return_type
+	BIPUSH 1
+	ISTORE return_type
+	ILOAD return_type
+
+	INVOKEVIRTUAL idiv		// invoke the method "idiv"
+	IFEQ loop_divisors		// if the remainder of abs(int1) % j is 0, loop
+	GOTO jump_out
+loop_divisors:
+// limit = abs(int1) / j
+	LDC_W OBJREF		// prepare for method call
+	// initialize int1
+	ILOAD absolute_int1
+	ISTORE int1
+	ILOAD int1
+	// initialize int2
+	ILOAD j
+	ISTORE int2
+	ILOAD int2
+	// initialize return_type
+	BIPUSH 0
+	ISTORE return_type
+	ILOAD return_type
+
+	INVOKEVIRTUAL idiv		// invoke the method "idiv"
+	ISTORE limit
+// if (limit != j)
+	ILOAD limit
+	ILOAD j
+	IF_ICMPEQ equal_divisors
+	BIPUSH 1
+	ILOAD numberOfDivisors
+	IADD
+	ISTORE numberOfDivisors
+
+equal_divisors:
+	BIPUSH 1
+	ILOAD numberOfDivisors
+	IADD
+	ISTORE numberOfDivisors
+
+	ILOAD j
+	BIPUSH 1
+	IADD
+	ISTORE j
+	GOTO dont_return
+
+jump_out:
+	ILOAD numberOfDivisors
+	IRETURN
+.end-method
+// -----------------------------------------------------------------------------/
+
+
+
+// -----------------------------------------------------------------------------/
+// Section for the isMul--------------------------------------------------------/
+// this method returns 1 if int2 is a multiple of int1; 0 otherwise
+.method	isMul( int1_isMul,int2_isMul )
+
+.var
+int1
+int2
+return_type
+remainder
+.end-var
+
+	LDC_W OBJREF
+	// initialize int1
+	ILOAD int2_isMul
+	ISTORE int1
+	ILOAD int1
+	// initialize int2
+	ILOAD int1_isMul
+	ISTORE int2
+	ILOAD int2
+	// initialize return_type
+	BIPUSH 1
+	ISTORE return_type
+	ILOAD return_type
+
+	INVOKEVIRTUAL idiv		// invoke the method "idiv"
+	ISTORE remainder		// store the remainder
+
+	ILOAD remainder
+	BIPUSH 0
+	IF_ICMPEQ return_1_isMul
+	BIPUSH 0
+	IRETURN
+return_1_isMul:
+	BIPUSH 1
+	IRETURN
+.end-method
+// -----------------------------------------------------------------------------/

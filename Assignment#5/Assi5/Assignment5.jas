@@ -1,0 +1,576 @@
+
+//this main for test isPrime(int1) and power(int1,int2)
+//first test isPrime(int1)
+//second test power(int1,int2)
+//loop test again
+
+
+.constant
+OBJREF 0x40			// needed for method invokation - see S.C.O. chapter 4
+.end-constant
+
+
+.main				// start of program
+
+.var				// local variables for main program
+a
+b
+c
+total
+.end-var
+//test is_prime()-------------------------------------------------------
+start:
+	BIPUSH 0x0		// initialize var a and b
+	DUP
+	ISTORE a
+	ISTORE b
+	BIPUSH 0x20		// print " "
+	OUT
+	
+	LDC_W OBJREF		// prepare for method call
+	INVOKEVIRTUAL getnum
+	ISTORE a		// store return value in a
+			
+	BIPUSH 0x3d		// print "========"
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	BIPUSH 0xa
+	OUT
+	
+	LDC_W OBJREF		// push OBJREF
+	ILOAD a
+
+	INVOKEVIRTUAL is_prime
+	
+	ISTORE total
+	
+	LDC_W OBJREF		// push OBJREF
+
+	ILOAD total		// push total, parameter for method print
+	INVOKEVIRTUAL print
+	
+	BIPUSH 0x3d		// print "========"
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	BIPUSH 0xa
+	OUT
+//----------------------------------------------------------------------
+
+
+//test power(int1,int2)-------------------------------------------------
+
+	BIPUSH 0x0		// initialize var a and b
+	DUP
+	ISTORE a
+	ISTORE b
+	BIPUSH 0x20		// print " "
+	OUT
+	
+	LDC_W OBJREF		// prepare for method call
+	INVOKEVIRTUAL getnum
+	ISTORE a		// store return value in a
+	
+	BIPUSH 94		// print "+"
+	OUT
+	
+	LDC_W OBJREF
+	INVOKEVIRTUAL getnum
+	ISTORE b		// store return value in b
+		
+	BIPUSH 0x3d		// print "========"
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	BIPUSH 0xa
+	OUT
+	
+	LDC_W OBJREF		// push OBJREF
+	ILOAD a
+	ILOAD b
+
+	INVOKEVIRTUAL power
+	
+	ISTORE total
+	
+	LDC_W OBJREF		// push OBJREF
+
+	ILOAD total		// push total, parameter for method print
+	INVOKEVIRTUAL print
+	BIPUSH 0x3d		// print "========"
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	BIPUSH 0xa
+	OUT
+	
+	
+	GOTO start		// start over
+.end-main
+
+.method getnum()
+.var
+a
+.end-var
+
+	BIPUSH 0x0		// initialize a
+        ISTORE a
+geta:	IN			// read key press
+	DUP			// duplicate key for comparison
+	BIPUSH 0xa		// if key = cr,
+	IF_ICMPEQ return	//   return
+	DUP
+	BIPUSH 0x30		// if key < "0"
+	ISUB			//
+	IFLT geta4		//   goto geta4 (key is not a hex digit)
+    	DUP
+	BIPUSH 0x3a		// else if key < ":"
+	ISUB			//
+	IFLT geta2		//   goto geta2 (key is numeric character - "0"-"9")
+	DUP
+	BIPUSH 0x41		// else if key < "A"
+	ISUB			//
+	IFLT geta4		//   goto geta4 (key is not a hex digit)
+	DUP
+	BIPUSH 0x46		// else if key > "F"
+	SWAP			//  
+	ISUB			//
+	IFLT geta4		//   goto geta4 (key is not a hex digit)
+	DUP			// else (key is letter - "A"-"F")
+	OUT			//   print key
+	BIPUSH 0x37		//   convert key from character to number
+	ISUB			//
+	GOTO geta3		//   goto geta3
+geta2:  DUP
+	OUT			// print key (numeric character)
+	BIPUSH 0x30		// convert key from character to number
+	ISUB
+geta3:  ILOAD a			// shift a left 8 bits
+	DUP
+	IADD
+	DUP
+	IADD
+	DUP
+	IADD
+	DUP
+	IADD
+	IADD			// add key to a
+	ISTORE a
+	GOTO geta		// get next key
+
+geta4:	POP			// pop invalid character
+	GOTO geta		// get next key
+
+return: OUT			// print cr
+	ILOAD a			// load a as return value
+	IRETURN			// return
+.end-method
+
+.method print( total ) 		// print converts a number into a string of
+				//   characters and prints them.  All of the characters
+				//   are pushed onto the stack, least significant
+				//   digit first, then popped off and printed.
+.var
+place
+index
+.end-var
+
+print: 	BIPUSH 0x9		// there are 8 nibbles in each integer--setting
+				//   this as nine pushes 10 characters onto the
+ 				//   stack, thus a total of ten printed digits,
+				//   but setting this less does not remove the
+				//   two leading zeros, just removes significant
+				//   digits
+	ISTORE index
+	BIPUSH 0x1		// comparison bit
+	ISTORE place
+print1:	BIPUSH 0x0
+	ILOAD index		// index = index - 1
+	BIPUSH 0x1
+	ISUB
+	DUP
+	IFEQ pall		// if index = 0  goto pall
+	ISTORE index
+	ILOAD total		// else
+	ILOAD place		//
+	IAND			//   if 1st bit of current nibble is zero (total & place)
+	IFEQ print2		//     goto print2
+	BIPUSH 0x1		//   else set first bit of character
+	IADD
+print2: ILOAD place		//   place = place << 1 
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			//   if 2nd bit of current nibble is zero (total & place)
+	IFEQ print3		//     goto print3
+	BIPUSH 0x2		//   else set second bit of character
+	IADD	
+print3: ILOAD place		//   place = place << 1
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			//   if 3rd bit of current nibble is zero (total & place)
+	IFEQ print4		//     goto print4
+	BIPUSH 0x4		//   else set second bit of character
+	IADD	
+print4: ILOAD place		//   place = place << 1
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			//   if 4th bit of current nibble is zero (total & place)
+	IFEQ print5		//     goto print5
+	BIPUSH 0x8		//   else set second bit of character
+	IADD	
+print5: ILOAD place		//   place = place << 1
+	DUP
+	IADD
+	ISTORE place
+	GOTO print1
+	
+pall:   POP			// Pop off leading 0's
+	POP
+	BIPUSH 0x9
+	ISTORE index
+pall1:	ILOAD index		// index = index - 1
+	BIPUSH 0x1
+	ISUB
+	DUP
+	IFEQ return		// if index = 0  return
+	ISTORE index
+	DUP
+	BIPUSH 0xa		// else if character < 0xa goto pall1
+	ISUB
+	IFLT pall2
+	BIPUSH 0x37		// else convert character to "A"-"F"
+	IADD
+	OUT			// print character
+	GOTO pall1		// goto pall (prepare & print next character)
+pall2:	BIPUSH 0x30		// convert character to "0"-"9"
+	IADD
+	OUT			// print character
+	GOTO pall1		// goto pall1 (prepare & print next character)
+return:	BIPUSH 0xa		// print cr
+	OUT
+	IRETURN			// no return value
+.end-method
+
+//----------------------------------------------------------------------
+//imul
+//multiple 2 positive integers
+//return int1*int2
+.method imul( int1,int2 )
+
+.var
+m
+c
+o
+i
+.end-var
+	BIPUSH 0	
+	ISTORE m		//m=0
+	
+	ILOAD int1
+	ISTORE c		//c=int1
+	ILOAD int2
+	ISTORE o		//o=int2
+	
+	BIPUSH 0
+	ISTORE i		//i=0
+	
+check:								
+	ILOAD i							
+	ILOAD c
+	ISUB
+	IFLT for_body	//i<c
+	GOTO end
+	
+for_body:
+	ILOAD m
+	ILOAD o
+	IADD
+	ISTORE m		//m=m+o
+	
+	IINC i 1		//i++
+	
+	GOTO check
+
+end:
+
+return:
+	ILOAD m
+	IRETURN	
+.end-method
+
+//----------------------------------------------------------------------
+//idiv
+//divide int1 by int2
+//if return_type=0 return quotient
+//else return remainder
+.method idiv( int1,int2,return_type )
+
+.var
+abs_int1
+abs_int2
+q //quotient
+r //remainder
+.end-var
+
+	BIPUSH 0
+	ISTORE q // q=0	
+	ILOAD int1
+	ISTORE abs_int1	//abs_int1=int1
+	ILOAD int2
+	ISTORE abs_int2 //abs_int2=int2
+	
+	ILOAD abs_int1
+	ISTORE r // r=abs_int1
+	
+check_while:
+	ILOAD r
+	ILOAD abs_int2
+	ISUB
+	IFLT end_while		//when r<abs_int2,end while
+	
+while_body:
+	ILOAD r
+	ILOAD abs_int2
+	ISUB
+	ISTORE r			//r=r-abs_int2
+	IINC q 1			//q++
+	GOTO check_while
+	
+end_while:
+
+if:
+	ILOAD return_type	
+	IFEQ returnR		//return_type !=0 return quotient	
+						//else return remainder
+returnQ:
+	ILOAD q
+	IRETURN		
+	
+returnR:
+	ILOAD r			
+	IRETURN	
+	
+.end-method
+
+//----------------------------------------------------------------------
+//is_prime
+//check a number is prime or not
+//if it is prime, return 1(true)
+//else return 0(false)
+.method is_prime(int)
+
+.var
+n
+i
+m
+
+.end-var
+
+	ILOAD int
+	ISTORE n
+
+ifA:
+	BIPUSH 1
+	ILOAD n
+	ISUB
+	IFLT else_ifA_1
+	GOTO returnF			//if n<=1, return 0(false)
+
+	
+else_ifA_1:
+	BIPUSH 3
+	ILOAD n
+	ISUB
+	IFLT else_ifA_2
+	GOTO returnT			//if n<=3, return 1(true)
+	
+else_ifA_2:
+	LDC_W OBJREF		// push OBJREF
+	ILOAD n
+	BIPUSH 2
+	BIPUSH 0	
+	INVOKEVIRTUAL idiv	
+	IFEQ returnF			//if n mod 2=0, return 0(false)
+	
+	LDC_W OBJREF		// push OBJREF
+	ILOAD n
+	BIPUSH 3
+	BIPUSH 0	
+	INVOKEVIRTUAL idiv	
+	IFEQ returnF			//if n mod 3=0, return 0(false)
+	
+let5:
+	BIPUSH 5
+	ISTORE i			// i=5
+	
+check_while:
+	LDC_W OBJREF		// push OBJREF
+	ILOAD i
+	DUP
+	INVOKEVIRTUAL imul
+	ISTORE m
+	
+	ILOAD n
+	ILOAD m
+	ISUB
+	IFLT end_while     // when i*i>n, exit while
+	
+ifB:
+	LDC_W OBJREF		// push OBJREF
+	ILOAD n
+	ILOAD i
+	BIPUSH 0	
+	INVOKEVIRTUAL idiv	
+	IFEQ returnF		//if n mod i = 0, return 0 (false)
+	
+	LDC_W OBJREF		// push OBJREF
+	ILOAD n
+	ILOAD i
+	BIPUSH 2
+	IADD
+	BIPUSH 0	
+	INVOKEVIRTUAL idiv	
+	IFEQ returnF		// if n mod i+2 = 0, return 0 (false)
+	
+	IINC i 6		//i=i+6
+	
+end_while:	
+
+returnT:
+	BIPUSH 1
+	IRETURN				// return 1(true)
+	
+returnF:	
+	BIPUSH 0
+	IRETURN
+			
+.end-method
+
+//----------------------------------------------------------------------
+//power
+//return abs(int1)^abs(int2)
+.method power(int1,int2)
+
+.var
+p
+num1
+num2
+i
+.end-var
+
+	ILOAD p
+	IFEQ reutrn0
+
+	BIPUSH 1
+	ISTORE p
+	
+	ILOAD int1
+	IFLT abs1
+	ILOAD int1
+	GOTO next1
+abs1:
+	ILOAD int1
+	INEG
+next1:
+	ISTORE num1
+	
+	ILOAD int2
+	IFLT abs2
+	ILOAD int2
+	GOTO next2
+abs2:
+	ILOAD int2
+	INEG
+next2:
+	ISTORE num2     // num1 =abs(int1), num2=abs(int2)
+	
+	BIPUSH 0x0		
+	ISTORE i		//i=0
+	
+check:
+	ILOAD i
+	ILOAD num2
+	ISUB
+	IFLT for_body   // when i>= num2, exit for_loop
+	GOTO end
+	
+for_body:
+	LDC_W OBJREF		// push OBJREF
+	ILOAD p
+	ILOAD num1
+	INVOKEVIRTUAL imul	
+	ISTORE p		// p=p*num1
+	
+	IINC i 1		//i++
+
+	GOTO check
+
+end:
+
+return:
+	ILOAD p
+	IRETURN
+	
+reutrn0:
+	BIPUSH 0
+	IRETURN
+	
+.end-method

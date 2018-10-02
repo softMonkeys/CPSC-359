@@ -1,0 +1,399 @@
+// The Jas program that uses the IN and OUT instructions in Mic-1 MMV
+.constant
+	OBJREF 0x40			// needed for method invokation - see S.C.O. chapter 4
+.end-constant
+
+// start of program
+.main
+
+.var				// local variables for main program
+a		// first user input
+b		// second user input
+flag		// undiction flag for iidiv to return quotient or remainder
+quotient_main		// reqister for quotient
+remainder_main		// register for remainder
+total
+.end-var
+
+start:
+// print "================"
+	BIPUSH 0x3d
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	DUP
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	BIPUSH 0xa		// start a new
+	OUT
+
+  // print "Is multiple?"
+	BIPUSH 0x49		// I
+	OUT
+	BIPUSH 0x73		// s
+	OUT
+	BIPUSH 0x20		// " "
+	OUT
+	BIPUSH 0x6D		// m
+	OUT
+	BIPUSH 0x6C		// l
+	OUT
+	BIPUSH 0x74		// t
+	OUT
+	BIPUSH 0x69		// i
+	OUT
+	BIPUSH 0x70		// p
+	OUT
+	BIPUSH 0x6C		// l
+	OUT
+	BIPUSH 0x65		// e
+	OUT
+	BIPUSH 0x3F		// ?
+	OUT
+	BIPUSH 0xa		// start a new
+	OUT
+
+// Take the user input
+	BIPUSH 0x0		// initialize var a and b
+	DUP		// copy the 0 in order to get ready for storing both register a and b
+	ISTORE a		// store the word on top of the stack into a
+	ISTORE b		// store the word on top of the stack into b
+	LDC_W OBJREF		// prepare for method call
+	INVOKEVIRTUAL getnum		// call method getnum
+	ISTORE a		// store return value in a
+
+	LDC_W OBJREF		// prepare for method call
+	INVOKEVIRTUAL getnum
+	ISTORE b		// store return value in b
+
+	ILOAD a		// push the first parament
+	ILOAD b		// push the second parament
+  iisMul		// call iisMul
+
+	ISTORE a		// store the return value in the a
+	ILOAD a		// push the first parament
+	INVOKEVIRTUAL print
+
+	// print "Division"
+	BIPUSH 0x44		// D
+	OUT
+	BIPUSH 0x69		// i
+	OUT
+	BIPUSH 0x76		// v
+	OUT
+	BIPUSH 0x69		// i
+	OUT
+	BIPUSH 0x73		// s
+	OUT
+	BIPUSH 0x69		// i
+	OUT
+	BIPUSH 0x6F		// o
+	OUT
+	BIPUSH 0x6E		// n
+	OUT
+	BIPUSH 0xa		// start a new
+	OUT
+
+
+	BIPUSH 0x0		// initialize var a and b
+	DUP
+	ISTORE a
+	ISTORE b
+	LDC_W OBJREF		// prepare for method call
+	INVOKEVIRTUAL getnum
+	ISTORE a		// store return value in a
+
+	LDC_W OBJREF		// prepare for method call
+	INVOKEVIRTUAL getnum
+	ISTORE b		// store return value in b
+
+// Calculate the quotient
+	BIPUSH 1
+	ISTORE flag
+	ILOAD flag		// push the first parament
+	ILOAD a		// push the second parament
+	ILOAD b		// push the third parament
+  iidiv
+	ISTORE quotient_main
+
+// Calculate the remainder
+	BIPUSH 0
+	ISTORE flag
+	ILOAD flag		// push the first parament
+	ILOAD a		// push the second parament
+	ILOAD b		// push the third parament
+  iidiv
+	ISTORE remainder_main
+
+
+// print "Quotient"
+	BIPUSH 0x51		// Q
+	OUT
+	BIPUSH 0x75		// u
+	OUT
+	BIPUSH 0x6F		// o
+	OUT
+	BIPUSH 0x74		// t
+	OUT
+	BIPUSH 0x69		// i
+	OUT
+	BIPUSH 0x65		// e
+	OUT
+	BIPUSH 0x6E		// n
+	OUT
+	BIPUSH 0x74		// t
+	OUT
+	BIPUSH 0xa		// start a new
+	OUT
+
+	ILOAD quotient_main
+	INVOKEVIRTUAL print
+
+// print "Remainder"
+	BIPUSH 0x52		// R
+	OUT
+	BIPUSH 0x65		// e
+	OUT
+	BIPUSH 0x6D		// m
+	OUT
+	BIPUSH 0x61		// a
+	OUT
+	BIPUSH 0x69		// i
+	OUT
+	BIPUSH 0x6E		// n
+	OUT
+	BIPUSH 0x64		// d
+	OUT
+	BIPUSH 0x65		// e
+	OUT
+	BIPUSH 0x72		// r
+	OUT
+	BIPUSH 0xa		// start a new
+	OUT
+
+	ILOAD remainder_main
+	INVOKEVIRTUAL print
+
+
+	GOTO start
+
+.end-main
+
+
+// -----------------------------------------------------------------------------/
+// Section for the print-------------------------------------------------------/
+.method print( total ) 		// print converts a number into a string of
+				//   characters and prints them.  All of the characters
+				//   are pushed onto the stack, least significant
+				//   digit first, then popped off and printed.
+.var
+place
+index
+.end-var
+
+print: 	BIPUSH 0x9		// there are 8 nibbles in each integer--setting
+				//   this as nine pushes 10 characters onto the
+ 				//   stack, thus a total of ten printed digits,
+				//   but setting this less does not remove the
+				//   two leading zeros, just removes significant
+				//   digits
+	ISTORE index
+	BIPUSH 0x1		// comparison bit
+	ISTORE place
+print1:	BIPUSH 0x0
+	ILOAD index		// index = index - 1
+	BIPUSH 0x1
+	ISUB
+	DUP
+	IFEQ pall		// if index = 0  goto pall
+	ISTORE index
+	ILOAD total		// else
+	ILOAD place		//
+	IAND			//   if 1st bit of current nibble is zero (total & place)
+	IFEQ print2		//     goto print2
+	BIPUSH 0x1		//   else set first bit of character
+	IADD
+print2: ILOAD place		//   place = place << 1
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			//   if 2nd bit of current nibble is zero (total & place)
+	IFEQ print3		//     goto print3
+	BIPUSH 0x2		//   else set second bit of character
+	IADD
+print3: ILOAD place		//   place = place << 1
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			//   if 3rd bit of current nibble is zero (total & place)
+	IFEQ print4		//     goto print4
+	BIPUSH 0x4		//   else set second bit of character
+	IADD
+print4: ILOAD place		//   place = place << 1
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			//   if 4th bit of current nibble is zero (total & place)
+	IFEQ print5		//     goto print5
+	BIPUSH 0x8		//   else set second bit of character
+	IADD
+print5: ILOAD place		//   place = place << 1
+	DUP
+	IADD
+	ISTORE place
+	GOTO print1
+
+pall:   POP			// Pop off leading 0's
+	POP
+	BIPUSH 0x9
+	ISTORE index
+pall1:	ILOAD index		// index = index - 1
+	BIPUSH 0x1
+	ISUB
+	DUP
+	IFEQ return		// if index = 0  return
+	ISTORE index
+	DUP
+	BIPUSH 0xa		// else if character < 0xa goto pall1
+	ISUB
+	IFLT pall2
+	BIPUSH 0x37		// else convert character to "A"-"F"
+	IADD
+	OUT			// print character
+	GOTO pall1		// goto pall (prepare & print next character)
+pall2:	BIPUSH 0x30		// convert character to "0"-"9"
+	IADD
+	OUT			// print character
+	GOTO pall1		// goto pall1 (prepare & print next character)
+return:	BIPUSH 0xa		// print cr
+	OUT
+	IRETURN			// no return value
+.end-method
+// -----------------------------------------------------------------------------/
+
+
+
+// -----------------------------------------------------------------------------/
+// Section for the getnum-------------------------------------------------------/
+.method getnum()
+.var
+a
+negative
+.end-var
+
+	BIPUSH 0x0		// initialize a
+  ISTORE a
+
+///////////////////
+	BIPUSH 0x0		// initialize negative
+	ISTORE negative
+///////////////////
+
+geta:
+	IN			// read key press
+	DUP			// duplicate key for comparison
+	BIPUSH 0xa		// if key = cr,
+	IF_ICMPEQ return	//   return
+	DUP
+
+///////////////////
+	BIPUSH 0x2d		// ascii value for '-'
+	IF_ICMPEQ is_negative		// if it is equal, branch to is negative
+	DUP
+///////////////////
+
+	BIPUSH 0x30		// if key < "0"
+	ISUB			//
+	IFLT geta4		//   goto geta4 (key is not a hex digit)
+    	DUP
+	BIPUSH 0x3a		// else if key < ":"
+	ISUB			//
+	IFLT geta2		//   goto geta2 (key is numeric character - "0"-"9")
+	DUP
+	BIPUSH 0x41		// else if key < "A"
+	ISUB			//
+	IFLT geta4		//   goto geta4 (key is not a hex digit)
+	DUP
+	BIPUSH 0x46		// else if key > "F"
+	SWAP			//
+	ISUB			//
+	IFLT geta4		//   goto geta4 (key is not a hex digit)
+	DUP			// else (key is letter - "A"-"F")
+	OUT			//   print key
+	BIPUSH 0x37		//   convert key from character to number
+	ISUB			//
+	GOTO geta3		//   goto geta3
+geta2:  DUP
+	OUT			// print key (numeric character)
+	BIPUSH 0x30		// convert key from character to number
+	ISUB
+geta3:  ILOAD a			// shift a left 8 bits
+	DUP
+	IADD
+	DUP
+	IADD
+	DUP
+	IADD
+	DUP
+	IADD
+	IADD			// add key to a
+	ISTORE a
+	GOTO geta		// get next key
+
+geta4:
+	POP			// pop invalid character
+	GOTO geta		// get next key
+
+///////////////////
+is_negative:
+	OUT
+	BIPUSH 1
+	ISTORE negative
+	GOTO geta
+///////////////////
+
+return:
+	OUT			// print cr
+///////////////////
+	ILOAD	negative
+	IFEQ not_negative		// if flag equals to 0, it is not negative
+	ILOAD a
+	INEG		// take the negation
+	ISTORE a
+not_negative:
+///////////////////
+	ILOAD a			// load a as return value
+	IRETURN			// return
+.end-method
+// -----------------------------------------------------------------------------/

@@ -1,0 +1,61 @@
+
+build/output.elf:     file format elf32-littlearm
+
+
+Disassembly of section .init:
+
+00008000 <_start>:
+    8000:	eaffffff 	b	8004 <main>
+
+Disassembly of section .text:
+
+00008004 <main>:
+    8004:	e3a0d902 	mov	sp, #32768	; 0x8000
+    8008:	eb000003 	bl	801c <EnableJTAG>
+    800c:	e3a00005 	mov	r0, #5
+    8010:	e3a03008 	mov	r3, #8
+    8014:	e0800003 	add	r0, r0, r3
+
+00008018 <haltLoop$>:
+    8018:	eafffffe 	b	8018 <haltLoop$>
+
+0000801c <EnableJTAG>:
+    801c:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    8020:	e59f0064 	ldr	r0, [pc, #100]	; 808c <dowaitloop+0xc>
+    8024:	e0211001 	eor	r1, r1, r1
+    8028:	e5801000 	str	r1, [r0]
+    802c:	eb000012 	bl	807c <dowait>
+    8030:	e59f0058 	ldr	r0, [pc, #88]	; 8090 <dowaitloop+0x10>
+    8034:	e59f1058 	ldr	r1, [pc, #88]	; 8094 <dowaitloop+0x14>
+    8038:	e5801000 	str	r1, [r0]
+    803c:	eb00000e 	bl	807c <dowait>
+    8040:	e0211001 	eor	r1, r1, r1
+    8044:	e5801000 	str	r1, [r0]
+    8048:	e59f0048 	ldr	r0, [pc, #72]	; 8098 <dowaitloop+0x18>
+    804c:	e5901000 	ldr	r1, [r0]
+    8050:	e3c11a07 	bic	r1, r1, #28672	; 0x7000
+    8054:	e3811a02 	orr	r1, r1, #8192	; 0x2000
+    8058:	e5801000 	str	r1, [r0]
+    805c:	e59f0038 	ldr	r0, [pc, #56]	; 809c <dowaitloop+0x1c>
+    8060:	e5901000 	ldr	r1, [r0]
+    8064:	e59f2034 	ldr	r2, [pc, #52]	; 80a0 <dowaitloop+0x20>
+    8068:	e1c11002 	bic	r1, r1, r2
+    806c:	e59f2030 	ldr	r2, [pc, #48]	; 80a4 <dowaitloop+0x24>
+    8070:	e1811002 	orr	r1, r1, r2
+    8074:	e5801000 	str	r1, [r0]
+    8078:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+0000807c <dowait>:
+    807c:	e3a02f4b 	mov	r2, #300	; 0x12c
+
+00008080 <dowaitloop>:
+    8080:	e2522001 	subs	r2, r2, #1
+    8084:	1afffffd 	bne	8080 <dowaitloop>
+    8088:	e12fff1e 	bx	lr
+    808c:	3f200094 	.word	0x3f200094
+    8090:	3f200098 	.word	0x3f200098
+    8094:	0bc00010 	.word	0x0bc00010
+    8098:	3f200000 	.word	0x3f200000
+    809c:	3f200008 	.word	0x3f200008
+    80a0:	00e3ffc0 	.word	0x00e3ffc0
+    80a4:	0061b6c0 	.word	0x0061b6c0

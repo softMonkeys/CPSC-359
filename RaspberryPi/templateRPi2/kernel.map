@@ -1,0 +1,82 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD build/main.o
+LOAD build/jtag.o
+
+.init           0x00008000        0x4
+ *(.init)
+ .init          0x00008000        0x4 build/main.o
+                0x00008000                _start
+
+.data           0x00009080        0x0
+ *(.data)
+ .data          0x00009080        0x0 build/main.o
+ .data          0x00009080        0x0 build/jtag.o
+ *.c.o(*)
+
+.igot.plt       0x00008004        0x0 load address 0x00009080
+ .igot.plt      0x00000000        0x0 build/main.o
+
+.text           0x00008004       0xa4
+ *.c.o(.text)
+ *(.text)
+ .text          0x00008004       0x18 build/main.o
+ .text          0x0000801c       0x8c build/jtag.o
+                0x0000801c                EnableJTAG
+OUTPUT(build/output.elf elf32-littlearm)
+
+.glue_7         0x000080a8        0x0
+ .glue_7        0x00000000        0x0 linker stubs
+
+.glue_7t        0x000080a8        0x0
+ .glue_7t       0x00000000        0x0 linker stubs
+
+.vfp11_veneer   0x000080a8        0x0
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+
+.v4_bx          0x000080a8        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.iplt           0x000080a8        0x0
+ .iplt          0x00000000        0x0 build/main.o
+
+.rel.dyn        0x000080a8        0x0
+ .rel.iplt      0x00000000        0x0 build/main.o
+
+.bss            0x000080a8        0x0
+ .bss           0x000080a8        0x0 build/main.o
+ .bss           0x000080a8        0x0 build/jtag.o
+
+.ARM.attributes
+                0x00000000       0x29
+ .ARM.attributes
+                0x00000000       0x29 build/main.o
+ .ARM.attributes
+                0x00000029       0x29 build/jtag.o
+
+.debug_line     0x00000000       0xb0
+ .debug_line    0x00000000       0x4f build/main.o
+ .debug_line    0x0000004f       0x61 build/jtag.o
+
+.debug_info     0x00000000       0xe6
+ .debug_info    0x00000000       0x71 build/main.o
+ .debug_info    0x00000071       0x75 build/jtag.o
+
+.debug_abbrev   0x00000000       0x26
+ .debug_abbrev  0x00000000       0x12 build/main.o
+ .debug_abbrev  0x00000012       0x14 build/jtag.o
+
+.debug_aranges  0x00000000       0x48
+ .debug_aranges
+                0x00000000       0x28 build/main.o
+ .debug_aranges
+                0x00000028       0x20 build/jtag.o
+
+.debug_ranges   0x00000000       0x20
+ .debug_ranges  0x00000000       0x20 build/main.o

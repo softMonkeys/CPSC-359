@@ -1,0 +1,909 @@
+
+build/output.elf:     file format elf32-littlearm
+
+
+Disassembly of section .init:
+
+00008000 <_start>:
+    8000:	ea000504 	b	9418 <main>
+
+Disassembly of section .text:
+
+00009418 <main>:
+    9418:	e3a0d902 	mov	sp, #32768	; 0x8000
+    941c:	eb000223 	bl	9cb0 <EnableJTAG>
+    9420:	eb000245 	bl	9d3c <InitUART>
+    9424:	e59f083c 	ldr	r0, [pc, #2108]	; 9c68 <haltLoop$+0x4>
+    9428:	e3a0102c 	mov	r1, #44	; 0x2c
+    942c:	eb000280 	bl	9e34 <WriteStringUART>
+    9430:	e3a09000 	mov	r9, #0
+    9434:	e3a0a000 	mov	sl, #0
+    9438:	e3a0b000 	mov	fp, #0
+
+0000943c <next>:
+    943c:	e59f0828 	ldr	r0, [pc, #2088]	; 9c6c <haltLoop$+0x8>
+    9440:	e3a0107d 	mov	r1, #125	; 0x7d
+    9444:	eb00027a 	bl	9e34 <WriteStringUART>
+
+00009448 <loop>:
+    9448:	e59f0820 	ldr	r0, [pc, #2080]	; 9c70 <haltLoop$+0xc>
+    944c:	e3a01c01 	mov	r1, #256	; 0x100
+    9450:	eb000283 	bl	9e64 <ReadLineUART>
+    9454:	e3500001 	cmp	r0, #1
+    9458:	1a000013 	bne	94ac <negative>
+    945c:	e59f280c 	ldr	r2, [pc, #2060]	; 9c70 <haltLoop$+0xc>
+    9460:	e5d24000 	ldrb	r4, [r2]
+    9464:	e2444030 	sub	r4, r4, #48	; 0x30
+    9468:	e3540001 	cmp	r4, #1
+    946c:	0a00001f 	beq	94f0 <valid>
+    9470:	e5d24000 	ldrb	r4, [r2]
+    9474:	e2444030 	sub	r4, r4, #48	; 0x30
+    9478:	e3540002 	cmp	r4, #2
+    947c:	0a00001b 	beq	94f0 <valid>
+    9480:	e5d24000 	ldrb	r4, [r2]
+    9484:	e2444030 	sub	r4, r4, #48	; 0x30
+    9488:	e3540003 	cmp	r4, #3
+    948c:	0a000017 	beq	94f0 <valid>
+    9490:	e5d24000 	ldrb	r4, [r2]
+    9494:	e3540071 	cmp	r4, #113	; 0x71
+    9498:	1a00000d 	bne	94d4 <error>
+    949c:	e59f07d0 	ldr	r0, [pc, #2000]	; 9c74 <haltLoop$+0x10>
+    94a0:	e3a01014 	mov	r1, #20
+    94a4:	eb000262 	bl	9e34 <WriteStringUART>
+    94a8:	ea0001ed 	b	9c64 <haltLoop$>
+
+000094ac <negative>:
+    94ac:	e3500002 	cmp	r0, #2
+    94b0:	1a000007 	bne	94d4 <error>
+    94b4:	e59f27b4 	ldr	r2, [pc, #1972]	; 9c70 <haltLoop$+0xc>
+    94b8:	e5d24000 	ldrb	r4, [r2]
+    94bc:	e354002d 	cmp	r4, #45	; 0x2d
+    94c0:	1a000003 	bne	94d4 <error>
+    94c4:	e5d24001 	ldrb	r4, [r2, #1]
+    94c8:	e2444030 	sub	r4, r4, #48	; 0x30
+    94cc:	e3540001 	cmp	r4, #1
+    94d0:	0a000071 	beq	969c <summary>
+
+000094d4 <error>:
+    94d4:	e59f079c 	ldr	r0, [pc, #1948]	; 9c78 <haltLoop$+0x14>
+    94d8:	e3a010ba 	mov	r1, #186	; 0xba
+    94dc:	eb000254 	bl	9e34 <WriteStringUART>
+    94e0:	eaffffd8 	b	9448 <loop>
+
+000094e4 <errorWidth>:
+    94e4:	e59f0790 	ldr	r0, [pc, #1936]	; 9c7c <haltLoop$+0x18>
+    94e8:	e3a01035 	mov	r1, #53	; 0x35
+    94ec:	eb000250 	bl	9e34 <WriteStringUART>
+
+000094f0 <valid>:
+    94f0:	e59f0788 	ldr	r0, [pc, #1928]	; 9c80 <haltLoop$+0x1c>
+    94f4:	e3a01047 	mov	r1, #71	; 0x47
+    94f8:	eb00024d 	bl	9e34 <WriteStringUART>
+    94fc:	e59f076c 	ldr	r0, [pc, #1900]	; 9c70 <haltLoop$+0xc>
+    9500:	e3a01c01 	mov	r1, #256	; 0x100
+    9504:	eb000256 	bl	9e64 <ReadLineUART>
+    9508:	e3500001 	cmp	r0, #1
+    950c:	1afffff4 	bne	94e4 <errorWidth>
+    9510:	e59f2758 	ldr	r2, [pc, #1880]	; 9c70 <haltLoop$+0xc>
+    9514:	e5d23000 	ldrb	r3, [r2]
+    9518:	e2433030 	sub	r3, r3, #48	; 0x30
+    951c:	e3530003 	cmp	r3, #3
+    9520:	baffffef 	blt	94e4 <errorWidth>
+    9524:	e3530009 	cmp	r3, #9
+    9528:	caffffed 	bgt	94e4 <errorWidth>
+
+0000952c <choice>:
+    952c:	e3540001 	cmp	r4, #1
+    9530:	0a000028 	beq	95d8 <SQUARE>
+    9534:	e3540002 	cmp	r4, #2
+    9538:	0a00003d 	beq	9634 <RECTANGLE>
+    953c:	e1a07003 	mov	r7, r3
+    9540:	e1a08003 	mov	r8, r3
+
+00009544 <decrement>:
+    9544:	e2477001 	sub	r7, r7, #1
+    9548:	e0888007 	add	r8, r8, r7
+    954c:	e3570001 	cmp	r7, #1
+    9550:	cafffffb 	bgt	9544 <decrement>
+    9554:	e08bb008 	add	fp, fp, r8
+    9558:	e1a05003 	mov	r5, r3
+    955c:	e3a0c000 	mov	ip, #0
+    9560:	e3a08000 	mov	r8, #0
+    9564:	e3a07000 	mov	r7, #0
+
+00009568 <inner0>:
+    9568:	e1580005 	cmp	r8, r5
+    956c:	aa000004 	bge	9584 <inner01>
+    9570:	e59f070c 	ldr	r0, [pc, #1804]	; 9c84 <haltLoop$+0x20>
+    9574:	e3a01001 	mov	r1, #1
+    9578:	eb00022d 	bl	9e34 <WriteStringUART>
+    957c:	e2888001 	add	r8, r8, #1
+    9580:	eafffff8 	b	9568 <inner0>
+
+00009584 <inner01>:
+    9584:	e157000c 	cmp	r7, ip
+    9588:	ca000004 	bgt	95a0 <outter0>
+    958c:	e59f06f4 	ldr	r0, [pc, #1780]	; 9c88 <haltLoop$+0x24>
+    9590:	e3a01002 	mov	r1, #2
+    9594:	eb000226 	bl	9e34 <WriteStringUART>
+    9598:	e2877001 	add	r7, r7, #1
+    959c:	eafffff8 	b	9584 <inner01>
+
+000095a0 <outter0>:
+    95a0:	e28cc001 	add	ip, ip, #1
+    95a4:	e15c0003 	cmp	ip, r3
+    95a8:	0a000006 	beq	95c8 <last0>
+    95ac:	e59f06d8 	ldr	r0, [pc, #1752]	; 9c8c <haltLoop$+0x28>
+    95b0:	e3a01002 	mov	r1, #2
+    95b4:	eb00021e 	bl	9e34 <WriteStringUART>
+    95b8:	e2455001 	sub	r5, r5, #1
+    95bc:	e3a08000 	mov	r8, #0
+    95c0:	e3a07000 	mov	r7, #0
+    95c4:	eaffffe7 	b	9568 <inner0>
+
+000095c8 <last0>:
+    95c8:	e59f06bc 	ldr	r0, [pc, #1724]	; 9c8c <haltLoop$+0x28>
+    95cc:	e3a01002 	mov	r1, #2
+    95d0:	eb000217 	bl	9e34 <WriteStringUART>
+    95d4:	eaffff98 	b	943c <next>
+
+000095d8 <SQUARE>:
+    95d8:	e0070393 	mul	r7, r3, r3
+    95dc:	e0899007 	add	r9, r9, r7
+    95e0:	e3a07000 	mov	r7, #0
+    95e4:	e3a08000 	mov	r8, #0
+
+000095e8 <inner>:
+    95e8:	e1580003 	cmp	r8, r3
+    95ec:	aa000004 	bge	9604 <outter>
+    95f0:	e59f0690 	ldr	r0, [pc, #1680]	; 9c88 <haltLoop$+0x24>
+    95f4:	e3a01002 	mov	r1, #2
+    95f8:	eb00020d 	bl	9e34 <WriteStringUART>
+    95fc:	e2888001 	add	r8, r8, #1
+    9600:	eafffff8 	b	95e8 <inner>
+
+00009604 <outter>:
+    9604:	e2877001 	add	r7, r7, #1
+    9608:	e1570003 	cmp	r7, r3
+    960c:	0a000004 	beq	9624 <last>
+    9610:	e59f0674 	ldr	r0, [pc, #1652]	; 9c8c <haltLoop$+0x28>
+    9614:	e3a01002 	mov	r1, #2
+    9618:	eb000205 	bl	9e34 <WriteStringUART>
+    961c:	e3a08000 	mov	r8, #0
+    9620:	eafffff0 	b	95e8 <inner>
+
+00009624 <last>:
+    9624:	e59f0660 	ldr	r0, [pc, #1632]	; 9c8c <haltLoop$+0x28>
+    9628:	e3a01002 	mov	r1, #2
+    962c:	eb000200 	bl	9e34 <WriteStringUART>
+    9630:	eaffff81 	b	943c <next>
+
+00009634 <RECTANGLE>:
+    9634:	e1a05003 	mov	r5, r3
+    9638:	e2455002 	sub	r5, r5, #2
+    963c:	e1a07003 	mov	r7, r3
+    9640:	e0070795 	mul	r7, r5, r7
+    9644:	e08aa007 	add	sl, sl, r7
+    9648:	e3a07000 	mov	r7, #0
+    964c:	e3a08000 	mov	r8, #0
+
+00009650 <inner1>:
+    9650:	e1580003 	cmp	r8, r3
+    9654:	aa000004 	bge	966c <outter1>
+    9658:	e59f0628 	ldr	r0, [pc, #1576]	; 9c88 <haltLoop$+0x24>
+    965c:	e3a01002 	mov	r1, #2
+    9660:	eb0001f3 	bl	9e34 <WriteStringUART>
+    9664:	e2888001 	add	r8, r8, #1
+    9668:	eafffff8 	b	9650 <inner1>
+
+0000966c <outter1>:
+    966c:	e2877001 	add	r7, r7, #1
+    9670:	e1570005 	cmp	r7, r5
+    9674:	0a000004 	beq	968c <last1>
+    9678:	e59f060c 	ldr	r0, [pc, #1548]	; 9c8c <haltLoop$+0x28>
+    967c:	e3a01002 	mov	r1, #2
+    9680:	eb0001eb 	bl	9e34 <WriteStringUART>
+    9684:	e3a08000 	mov	r8, #0
+    9688:	eafffff0 	b	9650 <inner1>
+
+0000968c <last1>:
+    968c:	e59f05f8 	ldr	r0, [pc, #1528]	; 9c8c <haltLoop$+0x28>
+    9690:	e3a01002 	mov	r1, #2
+    9694:	eb0001e6 	bl	9e34 <WriteStringUART>
+    9698:	eaffff67 	b	943c <next>
+
+0000969c <summary>:
+    969c:	e3a00000 	mov	r0, #0
+    96a0:	e089000a 	add	r0, r9, sl
+    96a4:	e080000b 	add	r0, r0, fp
+    96a8:	e3a0100a 	mov	r1, #10
+    96ac:	e0090991 	mul	r9, r1, r9
+    96b0:	e3a01000 	mov	r1, #0
+    96b4:	e731f019 	udiv	r1, r9, r0
+    96b8:	e3a0200a 	mov	r2, #10
+    96bc:	e00a0a92 	mul	sl, r2, sl
+    96c0:	e3a02000 	mov	r2, #0
+    96c4:	e732f01a 	udiv	r2, sl, r0
+    96c8:	e3a0300a 	mov	r3, #10
+    96cc:	e00b0b93 	mul	fp, r3, fp
+    96d0:	e3a03000 	mov	r3, #0
+    96d4:	e733f01b 	udiv	r3, fp, r0
+    96d8:	e3500000 	cmp	r0, #0
+    96dc:	1a000018 	bne	9744 <twoMeanZero>
+    96e0:	e59f05a8 	ldr	r0, [pc, #1448]	; 9c90 <haltLoop$+0x2c>
+    96e4:	e3a0101a 	mov	r1, #26
+    96e8:	eb0001d1 	bl	9e34 <WriteStringUART>
+    96ec:	e59f05a0 	ldr	r0, [pc, #1440]	; 9c94 <haltLoop$+0x30>
+    96f0:	e3a01003 	mov	r1, #3
+    96f4:	eb0001ce 	bl	9e34 <WriteStringUART>
+    96f8:	e59f0598 	ldr	r0, [pc, #1432]	; 9c98 <haltLoop$+0x34>
+    96fc:	e3a01026 	mov	r1, #38	; 0x26
+    9700:	eb0001cb 	bl	9e34 <WriteStringUART>
+    9704:	e59f0588 	ldr	r0, [pc, #1416]	; 9c94 <haltLoop$+0x30>
+    9708:	e3a01003 	mov	r1, #3
+    970c:	eb0001c8 	bl	9e34 <WriteStringUART>
+    9710:	e59f0584 	ldr	r0, [pc, #1412]	; 9c9c <haltLoop$+0x38>
+    9714:	e3a01029 	mov	r1, #41	; 0x29
+    9718:	eb0001c5 	bl	9e34 <WriteStringUART>
+    971c:	e59f0570 	ldr	r0, [pc, #1392]	; 9c94 <haltLoop$+0x30>
+    9720:	e3a01003 	mov	r1, #3
+    9724:	eb0001c2 	bl	9e34 <WriteStringUART>
+    9728:	e59f0570 	ldr	r0, [pc, #1392]	; 9ca0 <haltLoop$+0x3c>
+    972c:	e3a01028 	mov	r1, #40	; 0x28
+    9730:	eb0001bf 	bl	9e34 <WriteStringUART>
+    9734:	e59f0558 	ldr	r0, [pc, #1368]	; 9c94 <haltLoop$+0x30>
+    9738:	e3a01003 	mov	r1, #3
+    973c:	eb0001bc 	bl	9e34 <WriteStringUART>
+    9740:	eaffff3d 	b	943c <next>
+
+00009744 <twoMeanZero>:
+    9744:	e3a0400a 	mov	r4, #10
+    9748:	e739f419 	udiv	r9, r9, r4
+    974c:	e1500009 	cmp	r0, r9
+    9750:	0a00006b 	beq	9904 <outputMeanSqu>
+    9754:	e73af41a 	udiv	sl, sl, r4
+    9758:	e150000a 	cmp	r0, sl
+    975c:	0a0000b0 	beq	9a24 <outputMeanRec>
+    9760:	e73bf41b 	udiv	fp, fp, r4
+    9764:	e150000b 	cmp	r0, fp
+    9768:	0a0000f5 	beq	9b44 <outputMeanTri>
+    976c:	e1a09001 	mov	r9, r1
+    9770:	e1a0a002 	mov	sl, r2
+    9774:	e1a0b003 	mov	fp, r3
+    9778:	e1a04000 	mov	r4, r0
+    977c:	e3a05001 	mov	r5, #1
+    9780:	e3a0600a 	mov	r6, #10
+    9784:	e354000a 	cmp	r4, #10
+    9788:	ba000050 	blt	98d0 <printSingleD>
+
+0000978c <checkD>:
+    978c:	e354000a 	cmp	r4, #10
+    9790:	ba000002 	blt	97a0 <doneD>
+    9794:	e734f614 	udiv	r4, r4, r6
+    9798:	e2855001 	add	r5, r5, #1
+    979c:	eafffffa 	b	978c <checkD>
+
+000097a0 <doneD>:
+    97a0:	e2455001 	sub	r5, r5, #1
+    97a4:	e3a0700a 	mov	r7, #10
+
+000097a8 <check1D>:
+    97a8:	e3550001 	cmp	r5, #1
+    97ac:	0a000002 	beq	97bc <done1D>
+    97b0:	e0060697 	mul	r6, r7, r6
+    97b4:	e2455001 	sub	r5, r5, #1
+    97b8:	eafffffa 	b	97a8 <check1D>
+
+000097bc <done1D>:
+    97bc:	e1a05000 	mov	r5, r0
+    97c0:	e1a07000 	mov	r7, r0
+    97c4:	e59f04c4 	ldr	r0, [pc, #1220]	; 9c90 <haltLoop$+0x2c>
+    97c8:	e3a0101a 	mov	r1, #26
+    97cc:	eb000198 	bl	9e34 <WriteStringUART>
+
+000097d0 <check2D>:
+    97d0:	e735f615 	udiv	r5, r5, r6
+    97d4:	e1a08005 	mov	r8, r5
+    97d8:	e59f44c4 	ldr	r4, [pc, #1220]	; 9ca4 <haltLoop$+0x40>
+    97dc:	e2888030 	add	r8, r8, #48	; 0x30
+    97e0:	e5c48000 	strb	r8, [r4]
+    97e4:	e59f04b8 	ldr	r0, [pc, #1208]	; 9ca4 <haltLoop$+0x40>
+    97e8:	e3a01001 	mov	r1, #1
+    97ec:	eb000190 	bl	9e34 <WriteStringUART>
+    97f0:	e0050596 	mul	r5, r6, r5
+    97f4:	e0477005 	sub	r7, r7, r5
+    97f8:	e3a0400a 	mov	r4, #10
+    97fc:	e736f416 	udiv	r6, r6, r4
+    9800:	e1a05007 	mov	r5, r7
+    9804:	e3560001 	cmp	r6, #1
+    9808:	aafffff0 	bge	97d0 <check2D>
+    980c:	e59f0478 	ldr	r0, [pc, #1144]	; 9c8c <haltLoop$+0x28>
+    9810:	e3a01002 	mov	r1, #2
+    9814:	eb000186 	bl	9e34 <WriteStringUART>
+
+00009818 <next1D>:
+    9818:	e59f0478 	ldr	r0, [pc, #1144]	; 9c98 <haltLoop$+0x34>
+    981c:	e3a01026 	mov	r1, #38	; 0x26
+    9820:	eb000183 	bl	9e34 <WriteStringUART>
+    9824:	e59f047c 	ldr	r0, [pc, #1148]	; 9ca8 <haltLoop$+0x44>
+    9828:	e3a01002 	mov	r1, #2
+    982c:	eb000180 	bl	9e34 <WriteStringUART>
+    9830:	e59f446c 	ldr	r4, [pc, #1132]	; 9ca4 <haltLoop$+0x40>
+    9834:	e2899030 	add	r9, r9, #48	; 0x30
+    9838:	e5c49000 	strb	r9, [r4]
+    983c:	e59f0460 	ldr	r0, [pc, #1120]	; 9ca4 <haltLoop$+0x40>
+    9840:	e3a01001 	mov	r1, #1
+    9844:	eb00017a 	bl	9e34 <WriteStringUART>
+    9848:	e59f043c 	ldr	r0, [pc, #1084]	; 9c8c <haltLoop$+0x28>
+    984c:	e3a01002 	mov	r1, #2
+    9850:	eb000177 	bl	9e34 <WriteStringUART>
+    9854:	e59f0440 	ldr	r0, [pc, #1088]	; 9c9c <haltLoop$+0x38>
+    9858:	e3a01029 	mov	r1, #41	; 0x29
+    985c:	eb000174 	bl	9e34 <WriteStringUART>
+    9860:	e59f0440 	ldr	r0, [pc, #1088]	; 9ca8 <haltLoop$+0x44>
+    9864:	e3a01002 	mov	r1, #2
+    9868:	eb000171 	bl	9e34 <WriteStringUART>
+    986c:	e59f4430 	ldr	r4, [pc, #1072]	; 9ca4 <haltLoop$+0x40>
+    9870:	e28aa030 	add	sl, sl, #48	; 0x30
+    9874:	e5c4a000 	strb	sl, [r4]
+    9878:	e59f0424 	ldr	r0, [pc, #1060]	; 9ca4 <haltLoop$+0x40>
+    987c:	e3a01001 	mov	r1, #1
+    9880:	eb00016b 	bl	9e34 <WriteStringUART>
+    9884:	e59f0400 	ldr	r0, [pc, #1024]	; 9c8c <haltLoop$+0x28>
+    9888:	e3a01002 	mov	r1, #2
+    988c:	eb000168 	bl	9e34 <WriteStringUART>
+    9890:	e59f0408 	ldr	r0, [pc, #1032]	; 9ca0 <haltLoop$+0x3c>
+    9894:	e3a01028 	mov	r1, #40	; 0x28
+    9898:	eb000165 	bl	9e34 <WriteStringUART>
+    989c:	e59f0404 	ldr	r0, [pc, #1028]	; 9ca8 <haltLoop$+0x44>
+    98a0:	e3a01002 	mov	r1, #2
+    98a4:	eb000162 	bl	9e34 <WriteStringUART>
+    98a8:	e59f43f4 	ldr	r4, [pc, #1012]	; 9ca4 <haltLoop$+0x40>
+    98ac:	e28bb030 	add	fp, fp, #48	; 0x30
+    98b0:	e5c4b000 	strb	fp, [r4]
+    98b4:	e59f03e8 	ldr	r0, [pc, #1000]	; 9ca4 <haltLoop$+0x40>
+    98b8:	e3a01001 	mov	r1, #1
+    98bc:	eb00015c 	bl	9e34 <WriteStringUART>
+    98c0:	e59f03c4 	ldr	r0, [pc, #964]	; 9c8c <haltLoop$+0x28>
+    98c4:	e3a01002 	mov	r1, #2
+    98c8:	eb000159 	bl	9e34 <WriteStringUART>
+    98cc:	eafffeda 	b	943c <next>
+
+000098d0 <printSingleD>:
+    98d0:	e2844030 	add	r4, r4, #48	; 0x30
+    98d4:	e59f53c8 	ldr	r5, [pc, #968]	; 9ca4 <haltLoop$+0x40>
+    98d8:	e5c54000 	strb	r4, [r5]
+    98dc:	e59f03ac 	ldr	r0, [pc, #940]	; 9c90 <haltLoop$+0x2c>
+    98e0:	e3a0101a 	mov	r1, #26
+    98e4:	eb000152 	bl	9e34 <WriteStringUART>
+    98e8:	e59f03b4 	ldr	r0, [pc, #948]	; 9ca4 <haltLoop$+0x40>
+    98ec:	e3a01001 	mov	r1, #1
+    98f0:	eb00014f 	bl	9e34 <WriteStringUART>
+    98f4:	e59f0390 	ldr	r0, [pc, #912]	; 9c8c <haltLoop$+0x28>
+    98f8:	e3a01002 	mov	r1, #2
+    98fc:	eb00014c 	bl	9e34 <WriteStringUART>
+    9900:	eaffffc4 	b	9818 <next1D>
+
+00009904 <outputMeanSqu>:
+    9904:	e1a04000 	mov	r4, r0
+    9908:	e3a05001 	mov	r5, #1
+    990c:	e3a0600a 	mov	r6, #10
+    9910:	e354000a 	cmp	r4, #10
+    9914:	ba000035 	blt	99f0 <printSingle>
+
+00009918 <check>:
+    9918:	e354000a 	cmp	r4, #10
+    991c:	ba000002 	blt	992c <done>
+    9920:	e734f614 	udiv	r4, r4, r6
+    9924:	e2855001 	add	r5, r5, #1
+    9928:	eafffffa 	b	9918 <check>
+
+0000992c <done>:
+    992c:	e2455001 	sub	r5, r5, #1
+    9930:	e3a0700a 	mov	r7, #10
+
+00009934 <check1>:
+    9934:	e3550001 	cmp	r5, #1
+    9938:	0a000002 	beq	9948 <done1>
+    993c:	e0060697 	mul	r6, r7, r6
+    9940:	e2455001 	sub	r5, r5, #1
+    9944:	eafffffa 	b	9934 <check1>
+
+00009948 <done1>:
+    9948:	e1a05000 	mov	r5, r0
+    994c:	e1a07000 	mov	r7, r0
+    9950:	e59f0338 	ldr	r0, [pc, #824]	; 9c90 <haltLoop$+0x2c>
+    9954:	e3a0101a 	mov	r1, #26
+    9958:	eb000135 	bl	9e34 <WriteStringUART>
+
+0000995c <check2>:
+    995c:	e735f615 	udiv	r5, r5, r6
+    9960:	e1a08005 	mov	r8, r5
+    9964:	e59f4338 	ldr	r4, [pc, #824]	; 9ca4 <haltLoop$+0x40>
+    9968:	e2888030 	add	r8, r8, #48	; 0x30
+    996c:	e5c48000 	strb	r8, [r4]
+    9970:	e59f032c 	ldr	r0, [pc, #812]	; 9ca4 <haltLoop$+0x40>
+    9974:	e3a01001 	mov	r1, #1
+    9978:	eb00012d 	bl	9e34 <WriteStringUART>
+    997c:	e0050596 	mul	r5, r6, r5
+    9980:	e0477005 	sub	r7, r7, r5
+    9984:	e3a0400a 	mov	r4, #10
+    9988:	e736f416 	udiv	r6, r6, r4
+    998c:	e1a05007 	mov	r5, r7
+    9990:	e3560001 	cmp	r6, #1
+    9994:	aafffff0 	bge	995c <check2>
+    9998:	e59f02ec 	ldr	r0, [pc, #748]	; 9c8c <haltLoop$+0x28>
+    999c:	e3a01002 	mov	r1, #2
+    99a0:	eb000123 	bl	9e34 <WriteStringUART>
+
+000099a4 <next1>:
+    99a4:	e59f02ec 	ldr	r0, [pc, #748]	; 9c98 <haltLoop$+0x34>
+    99a8:	e3a01026 	mov	r1, #38	; 0x26
+    99ac:	eb000120 	bl	9e34 <WriteStringUART>
+    99b0:	e59f02f4 	ldr	r0, [pc, #756]	; 9cac <haltLoop$+0x48>
+    99b4:	e3a01003 	mov	r1, #3
+    99b8:	eb00011d 	bl	9e34 <WriteStringUART>
+    99bc:	e59f02d8 	ldr	r0, [pc, #728]	; 9c9c <haltLoop$+0x38>
+    99c0:	e3a01029 	mov	r1, #41	; 0x29
+    99c4:	eb00011a 	bl	9e34 <WriteStringUART>
+    99c8:	e59f02c4 	ldr	r0, [pc, #708]	; 9c94 <haltLoop$+0x30>
+    99cc:	e3a01003 	mov	r1, #3
+    99d0:	eb000117 	bl	9e34 <WriteStringUART>
+    99d4:	e59f02c4 	ldr	r0, [pc, #708]	; 9ca0 <haltLoop$+0x3c>
+    99d8:	e3a01028 	mov	r1, #40	; 0x28
+    99dc:	eb000114 	bl	9e34 <WriteStringUART>
+    99e0:	e59f02ac 	ldr	r0, [pc, #684]	; 9c94 <haltLoop$+0x30>
+    99e4:	e3a01003 	mov	r1, #3
+    99e8:	eb000111 	bl	9e34 <WriteStringUART>
+    99ec:	eafffe92 	b	943c <next>
+
+000099f0 <printSingle>:
+    99f0:	e2844030 	add	r4, r4, #48	; 0x30
+    99f4:	e59f52a8 	ldr	r5, [pc, #680]	; 9ca4 <haltLoop$+0x40>
+    99f8:	e5c54000 	strb	r4, [r5]
+    99fc:	e59f028c 	ldr	r0, [pc, #652]	; 9c90 <haltLoop$+0x2c>
+    9a00:	e3a0101a 	mov	r1, #26
+    9a04:	eb00010a 	bl	9e34 <WriteStringUART>
+    9a08:	e59f0294 	ldr	r0, [pc, #660]	; 9ca4 <haltLoop$+0x40>
+    9a0c:	e3a01001 	mov	r1, #1
+    9a10:	eb000107 	bl	9e34 <WriteStringUART>
+    9a14:	e59f0270 	ldr	r0, [pc, #624]	; 9c8c <haltLoop$+0x28>
+    9a18:	e3a01002 	mov	r1, #2
+    9a1c:	eb000104 	bl	9e34 <WriteStringUART>
+    9a20:	eaffffdf 	b	99a4 <next1>
+
+00009a24 <outputMeanRec>:
+    9a24:	e1a04000 	mov	r4, r0
+    9a28:	e3a05001 	mov	r5, #1
+    9a2c:	e3a0600a 	mov	r6, #10
+    9a30:	e354000a 	cmp	r4, #10
+    9a34:	ba000035 	blt	9b10 <printSingleB>
+
+00009a38 <checkB>:
+    9a38:	e354000a 	cmp	r4, #10
+    9a3c:	ba000002 	blt	9a4c <doneB>
+    9a40:	e734f614 	udiv	r4, r4, r6
+    9a44:	e2855001 	add	r5, r5, #1
+    9a48:	eafffffa 	b	9a38 <checkB>
+
+00009a4c <doneB>:
+    9a4c:	e2455001 	sub	r5, r5, #1
+    9a50:	e3a0700a 	mov	r7, #10
+
+00009a54 <check1B>:
+    9a54:	e3550001 	cmp	r5, #1
+    9a58:	0a000002 	beq	9a68 <done1B>
+    9a5c:	e0060697 	mul	r6, r7, r6
+    9a60:	e2455001 	sub	r5, r5, #1
+    9a64:	eafffffa 	b	9a54 <check1B>
+
+00009a68 <done1B>:
+    9a68:	e1a05000 	mov	r5, r0
+    9a6c:	e1a07000 	mov	r7, r0
+    9a70:	e59f0218 	ldr	r0, [pc, #536]	; 9c90 <haltLoop$+0x2c>
+    9a74:	e3a0101a 	mov	r1, #26
+    9a78:	eb0000ed 	bl	9e34 <WriteStringUART>
+
+00009a7c <check2B>:
+    9a7c:	e735f615 	udiv	r5, r5, r6
+    9a80:	e1a08005 	mov	r8, r5
+    9a84:	e59f4218 	ldr	r4, [pc, #536]	; 9ca4 <haltLoop$+0x40>
+    9a88:	e2888030 	add	r8, r8, #48	; 0x30
+    9a8c:	e5c48000 	strb	r8, [r4]
+    9a90:	e59f020c 	ldr	r0, [pc, #524]	; 9ca4 <haltLoop$+0x40>
+    9a94:	e3a01001 	mov	r1, #1
+    9a98:	eb0000e5 	bl	9e34 <WriteStringUART>
+    9a9c:	e0050596 	mul	r5, r6, r5
+    9aa0:	e0477005 	sub	r7, r7, r5
+    9aa4:	e3a0400a 	mov	r4, #10
+    9aa8:	e736f416 	udiv	r6, r6, r4
+    9aac:	e1a05007 	mov	r5, r7
+    9ab0:	e3560001 	cmp	r6, #1
+    9ab4:	aafffff0 	bge	9a7c <check2B>
+    9ab8:	e59f01cc 	ldr	r0, [pc, #460]	; 9c8c <haltLoop$+0x28>
+    9abc:	e3a01002 	mov	r1, #2
+    9ac0:	eb0000db 	bl	9e34 <WriteStringUART>
+
+00009ac4 <next1B>:
+    9ac4:	e59f01cc 	ldr	r0, [pc, #460]	; 9c98 <haltLoop$+0x34>
+    9ac8:	e3a01026 	mov	r1, #38	; 0x26
+    9acc:	eb0000d8 	bl	9e34 <WriteStringUART>
+    9ad0:	e59f01bc 	ldr	r0, [pc, #444]	; 9c94 <haltLoop$+0x30>
+    9ad4:	e3a01003 	mov	r1, #3
+    9ad8:	eb0000d5 	bl	9e34 <WriteStringUART>
+    9adc:	e59f01b8 	ldr	r0, [pc, #440]	; 9c9c <haltLoop$+0x38>
+    9ae0:	e3a01029 	mov	r1, #41	; 0x29
+    9ae4:	eb0000d2 	bl	9e34 <WriteStringUART>
+    9ae8:	e59f01bc 	ldr	r0, [pc, #444]	; 9cac <haltLoop$+0x48>
+    9aec:	e3a01003 	mov	r1, #3
+    9af0:	eb0000cf 	bl	9e34 <WriteStringUART>
+    9af4:	e59f01a4 	ldr	r0, [pc, #420]	; 9ca0 <haltLoop$+0x3c>
+    9af8:	e3a01028 	mov	r1, #40	; 0x28
+    9afc:	eb0000cc 	bl	9e34 <WriteStringUART>
+    9b00:	e59f018c 	ldr	r0, [pc, #396]	; 9c94 <haltLoop$+0x30>
+    9b04:	e3a01003 	mov	r1, #3
+    9b08:	eb0000c9 	bl	9e34 <WriteStringUART>
+    9b0c:	eafffe4a 	b	943c <next>
+
+00009b10 <printSingleB>:
+    9b10:	e2844030 	add	r4, r4, #48	; 0x30
+    9b14:	e59f5188 	ldr	r5, [pc, #392]	; 9ca4 <haltLoop$+0x40>
+    9b18:	e5c54000 	strb	r4, [r5]
+    9b1c:	e59f016c 	ldr	r0, [pc, #364]	; 9c90 <haltLoop$+0x2c>
+    9b20:	e3a0101a 	mov	r1, #26
+    9b24:	eb0000c2 	bl	9e34 <WriteStringUART>
+    9b28:	e59f0174 	ldr	r0, [pc, #372]	; 9ca4 <haltLoop$+0x40>
+    9b2c:	e3a01001 	mov	r1, #1
+    9b30:	eb0000bf 	bl	9e34 <WriteStringUART>
+    9b34:	e59f0150 	ldr	r0, [pc, #336]	; 9c8c <haltLoop$+0x28>
+    9b38:	e3a01002 	mov	r1, #2
+    9b3c:	eb0000bc 	bl	9e34 <WriteStringUART>
+    9b40:	eaffffdf 	b	9ac4 <next1B>
+
+00009b44 <outputMeanTri>:
+    9b44:	e1a04000 	mov	r4, r0
+    9b48:	e3a05001 	mov	r5, #1
+    9b4c:	e3a0600a 	mov	r6, #10
+    9b50:	e354000a 	cmp	r4, #10
+    9b54:	ba000035 	blt	9c30 <printSingleC>
+
+00009b58 <checkC>:
+    9b58:	e354000a 	cmp	r4, #10
+    9b5c:	ba000002 	blt	9b6c <doneC>
+    9b60:	e734f614 	udiv	r4, r4, r6
+    9b64:	e2855001 	add	r5, r5, #1
+    9b68:	eafffffa 	b	9b58 <checkC>
+
+00009b6c <doneC>:
+    9b6c:	e2455001 	sub	r5, r5, #1
+    9b70:	e3a0700a 	mov	r7, #10
+
+00009b74 <check1C>:
+    9b74:	e3550001 	cmp	r5, #1
+    9b78:	0a000002 	beq	9b88 <done1C>
+    9b7c:	e0060697 	mul	r6, r7, r6
+    9b80:	e2455001 	sub	r5, r5, #1
+    9b84:	eafffffa 	b	9b74 <check1C>
+
+00009b88 <done1C>:
+    9b88:	e1a05000 	mov	r5, r0
+    9b8c:	e1a07000 	mov	r7, r0
+    9b90:	e59f00f8 	ldr	r0, [pc, #248]	; 9c90 <haltLoop$+0x2c>
+    9b94:	e3a0101a 	mov	r1, #26
+    9b98:	eb0000a5 	bl	9e34 <WriteStringUART>
+
+00009b9c <check2C>:
+    9b9c:	e735f615 	udiv	r5, r5, r6
+    9ba0:	e1a08005 	mov	r8, r5
+    9ba4:	e59f40f8 	ldr	r4, [pc, #248]	; 9ca4 <haltLoop$+0x40>
+    9ba8:	e2888030 	add	r8, r8, #48	; 0x30
+    9bac:	e5c48000 	strb	r8, [r4]
+    9bb0:	e59f00ec 	ldr	r0, [pc, #236]	; 9ca4 <haltLoop$+0x40>
+    9bb4:	e3a01001 	mov	r1, #1
+    9bb8:	eb00009d 	bl	9e34 <WriteStringUART>
+    9bbc:	e0050596 	mul	r5, r6, r5
+    9bc0:	e0477005 	sub	r7, r7, r5
+    9bc4:	e3a0400a 	mov	r4, #10
+    9bc8:	e736f416 	udiv	r6, r6, r4
+    9bcc:	e1a05007 	mov	r5, r7
+    9bd0:	e3560001 	cmp	r6, #1
+    9bd4:	aafffff0 	bge	9b9c <check2C>
+    9bd8:	e59f00ac 	ldr	r0, [pc, #172]	; 9c8c <haltLoop$+0x28>
+    9bdc:	e3a01002 	mov	r1, #2
+    9be0:	eb000093 	bl	9e34 <WriteStringUART>
+
+00009be4 <next1C>:
+    9be4:	e59f00ac 	ldr	r0, [pc, #172]	; 9c98 <haltLoop$+0x34>
+    9be8:	e3a01026 	mov	r1, #38	; 0x26
+    9bec:	eb000090 	bl	9e34 <WriteStringUART>
+    9bf0:	e59f009c 	ldr	r0, [pc, #156]	; 9c94 <haltLoop$+0x30>
+    9bf4:	e3a01003 	mov	r1, #3
+    9bf8:	eb00008d 	bl	9e34 <WriteStringUART>
+    9bfc:	e59f0098 	ldr	r0, [pc, #152]	; 9c9c <haltLoop$+0x38>
+    9c00:	e3a01029 	mov	r1, #41	; 0x29
+    9c04:	eb00008a 	bl	9e34 <WriteStringUART>
+    9c08:	e59f0084 	ldr	r0, [pc, #132]	; 9c94 <haltLoop$+0x30>
+    9c0c:	e3a01003 	mov	r1, #3
+    9c10:	eb000087 	bl	9e34 <WriteStringUART>
+    9c14:	e59f0084 	ldr	r0, [pc, #132]	; 9ca0 <haltLoop$+0x3c>
+    9c18:	e3a01028 	mov	r1, #40	; 0x28
+    9c1c:	eb000084 	bl	9e34 <WriteStringUART>
+    9c20:	e59f0084 	ldr	r0, [pc, #132]	; 9cac <haltLoop$+0x48>
+    9c24:	e3a01003 	mov	r1, #3
+    9c28:	eb000081 	bl	9e34 <WriteStringUART>
+    9c2c:	eafffe02 	b	943c <next>
+
+00009c30 <printSingleC>:
+    9c30:	e2844030 	add	r4, r4, #48	; 0x30
+    9c34:	e59f5068 	ldr	r5, [pc, #104]	; 9ca4 <haltLoop$+0x40>
+    9c38:	e5c54000 	strb	r4, [r5]
+    9c3c:	e59f004c 	ldr	r0, [pc, #76]	; 9c90 <haltLoop$+0x2c>
+    9c40:	e3a0101a 	mov	r1, #26
+    9c44:	eb00007a 	bl	9e34 <WriteStringUART>
+    9c48:	e59f0054 	ldr	r0, [pc, #84]	; 9ca4 <haltLoop$+0x40>
+    9c4c:	e3a01001 	mov	r1, #1
+    9c50:	eb000077 	bl	9e34 <WriteStringUART>
+    9c54:	e59f0030 	ldr	r0, [pc, #48]	; 9c8c <haltLoop$+0x28>
+    9c58:	e3a01002 	mov	r1, #2
+    9c5c:	eb000074 	bl	9e34 <WriteStringUART>
+    9c60:	eaffffdf 	b	9be4 <next1C>
+
+00009c64 <haltLoop$>:
+    9c64:	eafffffe 	b	9c64 <haltLoop$>
+    9c68:	00009080 	.word	0x00009080
+    9c6c:	000090ac 	.word	0x000090ac
+    9c70:	00009312 	.word	0x00009312
+    9c74:	000091e3 	.word	0x000091e3
+    9c78:	00009129 	.word	0x00009129
+    9c7c:	0000923e 	.word	0x0000923e
+    9c80:	000091f7 	.word	0x000091f7
+    9c84:	0000930e 	.word	0x0000930e
+    9c88:	00009304 	.word	0x00009304
+    9c8c:	0000930c 	.word	0x0000930c
+    9c90:	00009273 	.word	0x00009273
+    9c94:	00009306 	.word	0x00009306
+    9c98:	0000928d 	.word	0x0000928d
+    9c9c:	000092b3 	.word	0x000092b3
+    9ca0:	000092dc 	.word	0x000092dc
+    9ca4:	00009412 	.word	0x00009412
+    9ca8:	00009310 	.word	0x00009310
+    9cac:	00009309 	.word	0x00009309
+
+00009cb0 <EnableJTAG>:
+    9cb0:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    9cb4:	e59f0064 	ldr	r0, [pc, #100]	; 9d20 <dowaitloop+0xc>
+    9cb8:	e0211001 	eor	r1, r1, r1
+    9cbc:	e5801000 	str	r1, [r0]
+    9cc0:	eb000012 	bl	9d10 <dowait>
+    9cc4:	e59f0058 	ldr	r0, [pc, #88]	; 9d24 <dowaitloop+0x10>
+    9cc8:	e59f1058 	ldr	r1, [pc, #88]	; 9d28 <dowaitloop+0x14>
+    9ccc:	e5801000 	str	r1, [r0]
+    9cd0:	eb00000e 	bl	9d10 <dowait>
+    9cd4:	e0211001 	eor	r1, r1, r1
+    9cd8:	e5801000 	str	r1, [r0]
+    9cdc:	e59f0048 	ldr	r0, [pc, #72]	; 9d2c <dowaitloop+0x18>
+    9ce0:	e5901000 	ldr	r1, [r0]
+    9ce4:	e3c11a07 	bic	r1, r1, #28672	; 0x7000
+    9ce8:	e3811a02 	orr	r1, r1, #8192	; 0x2000
+    9cec:	e5801000 	str	r1, [r0]
+    9cf0:	e59f0038 	ldr	r0, [pc, #56]	; 9d30 <dowaitloop+0x1c>
+    9cf4:	e5901000 	ldr	r1, [r0]
+    9cf8:	e59f2034 	ldr	r2, [pc, #52]	; 9d34 <dowaitloop+0x20>
+    9cfc:	e1c11002 	bic	r1, r1, r2
+    9d00:	e59f2030 	ldr	r2, [pc, #48]	; 9d38 <dowaitloop+0x24>
+    9d04:	e1811002 	orr	r1, r1, r2
+    9d08:	e5801000 	str	r1, [r0]
+    9d0c:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+00009d10 <dowait>:
+    9d10:	e3a02f4b 	mov	r2, #300	; 0x12c
+
+00009d14 <dowaitloop>:
+    9d14:	e2522001 	subs	r2, r2, #1
+    9d18:	1afffffd 	bne	9d14 <dowaitloop>
+    9d1c:	e12fff1e 	bx	lr
+    9d20:	3f200094 	.word	0x3f200094
+    9d24:	3f200098 	.word	0x3f200098
+    9d28:	0bc00010 	.word	0x0bc00010
+    9d2c:	3f200000 	.word	0x3f200000
+    9d30:	3f200008 	.word	0x3f200008
+    9d34:	00e3ffc0 	.word	0x00e3ffc0
+    9d38:	0061b6c0 	.word	0x0061b6c0
+
+00009d3c <InitUART>:
+    9d3c:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    9d40:	e59f017c 	ldr	r0, [pc, #380]	; 9ec4 <WaitForCycles+0x10>
+    9d44:	e3a01001 	mov	r1, #1
+    9d48:	e5801000 	str	r1, [r0]
+    9d4c:	e59f0174 	ldr	r0, [pc, #372]	; 9ec8 <WaitForCycles+0x14>
+    9d50:	e0211001 	eor	r1, r1, r1
+    9d54:	e5801000 	str	r1, [r0]
+    9d58:	e59f016c 	ldr	r0, [pc, #364]	; 9ecc <WaitForCycles+0x18>
+    9d5c:	e0211001 	eor	r1, r1, r1
+    9d60:	e5801000 	str	r1, [r0]
+    9d64:	e59f0164 	ldr	r0, [pc, #356]	; 9ed0 <WaitForCycles+0x1c>
+    9d68:	e3a01003 	mov	r1, #3
+    9d6c:	e5801000 	str	r1, [r0]
+    9d70:	e59f015c 	ldr	r0, [pc, #348]	; 9ed4 <WaitForCycles+0x20>
+    9d74:	e0211001 	eor	r1, r1, r1
+    9d78:	e5801000 	str	r1, [r0]
+    9d7c:	e59f0144 	ldr	r0, [pc, #324]	; 9ec8 <WaitForCycles+0x14>
+    9d80:	e0211001 	eor	r1, r1, r1
+    9d84:	e5801000 	str	r1, [r0]
+    9d88:	e59f0148 	ldr	r0, [pc, #328]	; 9ed8 <WaitForCycles+0x24>
+    9d8c:	e3a010c6 	mov	r1, #198	; 0xc6
+    9d90:	e5801000 	str	r1, [r0]
+    9d94:	e59f0140 	ldr	r0, [pc, #320]	; 9edc <WaitForCycles+0x28>
+    9d98:	e59f1140 	ldr	r1, [pc, #320]	; 9ee0 <WaitForCycles+0x2c>
+    9d9c:	e5801000 	str	r1, [r0]
+    9da0:	e3a0000e 	mov	r0, #14
+    9da4:	e3a01002 	mov	r1, #2
+    9da8:	eb000053 	bl	9efc <SetGpioFunction>
+    9dac:	e3a0000f 	mov	r0, #15
+    9db0:	e3a01002 	mov	r1, #2
+    9db4:	eb000050 	bl	9efc <SetGpioFunction>
+    9db8:	e59f0124 	ldr	r0, [pc, #292]	; 9ee4 <WaitForCycles+0x30>
+    9dbc:	e0211001 	eor	r1, r1, r1
+    9dc0:	e5801000 	str	r1, [r0]
+    9dc4:	e3a00096 	mov	r0, #150	; 0x96
+    9dc8:	eb000039 	bl	9eb4 <WaitForCycles>
+    9dcc:	e59f0114 	ldr	r0, [pc, #276]	; 9ee8 <WaitForCycles+0x34>
+    9dd0:	e3a01903 	mov	r1, #49152	; 0xc000
+    9dd4:	e5801000 	str	r1, [r0]
+    9dd8:	e3a00096 	mov	r0, #150	; 0x96
+    9ddc:	eb000034 	bl	9eb4 <WaitForCycles>
+    9de0:	e59f0100 	ldr	r0, [pc, #256]	; 9ee8 <WaitForCycles+0x34>
+    9de4:	e0211001 	eor	r1, r1, r1
+    9de8:	e5801000 	str	r1, [r0]
+    9dec:	e59f00d8 	ldr	r0, [pc, #216]	; 9ecc <WaitForCycles+0x18>
+    9df0:	e3a01003 	mov	r1, #3
+    9df4:	e5801000 	str	r1, [r0]
+    9df8:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+00009dfc <PutCharUART>:
+    9dfc:	e59f20e8 	ldr	r2, [pc, #232]	; 9eec <WaitForCycles+0x38>
+
+00009e00 <putWaitLoop$>:
+    9e00:	e5921000 	ldr	r1, [r2]
+    9e04:	e3110020 	tst	r1, #32
+    9e08:	0afffffc 	beq	9e00 <putWaitLoop$>
+    9e0c:	e59f20dc 	ldr	r2, [pc, #220]	; 9ef0 <WaitForCycles+0x3c>
+    9e10:	e5820000 	str	r0, [r2]
+    9e14:	e1a0f00e 	mov	pc, lr
+
+00009e18 <GetCharUART>:
+    9e18:	e59f20cc 	ldr	r2, [pc, #204]	; 9eec <WaitForCycles+0x38>
+
+00009e1c <getWaitLoop$>:
+    9e1c:	e5921000 	ldr	r1, [r2]
+    9e20:	e3110001 	tst	r1, #1
+    9e24:	0afffffc 	beq	9e1c <getWaitLoop$>
+    9e28:	e59f20c0 	ldr	r2, [pc, #192]	; 9ef0 <WaitForCycles+0x3c>
+    9e2c:	e5920000 	ldr	r0, [r2]
+    9e30:	e1a0f00e 	mov	pc, lr
+
+00009e34 <WriteStringUART>:
+    9e34:	e92d4070 	push	{r4, r5, r6, lr}
+    9e38:	e1a04000 	mov	r4, r0
+    9e3c:	e1a05001 	mov	r5, r1
+    9e40:	e3a06000 	mov	r6, #0
+
+00009e44 <writeLoop$>:
+    9e44:	e3550000 	cmp	r5, #0
+    9e48:	da000004 	ble	9e60 <writeLoopEnd$>
+    9e4c:	e7d40006 	ldrb	r0, [r4, r6]
+    9e50:	ebffffe9 	bl	9dfc <PutCharUART>
+    9e54:	e2866001 	add	r6, r6, #1
+    9e58:	e2455001 	sub	r5, r5, #1
+    9e5c:	eafffff8 	b	9e44 <writeLoop$>
+
+00009e60 <writeLoopEnd$>:
+    9e60:	e8bd8070 	pop	{r4, r5, r6, pc}
+
+00009e64 <ReadLineUART>:
+    9e64:	e92d4070 	push	{r4, r5, r6, lr}
+    9e68:	e1a04000 	mov	r4, r0
+    9e6c:	e1a05001 	mov	r5, r1
+    9e70:	e3a06000 	mov	r6, #0
+
+00009e74 <readLoop$>:
+    9e74:	e1360005 	teq	r6, r5
+    9e78:	0a00000b 	beq	9eac <readLoopEnd$>
+    9e7c:	ebffffe5 	bl	9e18 <GetCharUART>
+    9e80:	ebffffdd 	bl	9dfc <PutCharUART>
+    9e84:	e5c40000 	strb	r0, [r4]
+    9e88:	e2866001 	add	r6, r6, #1
+    9e8c:	e2844001 	add	r4, r4, #1
+    9e90:	e330000d 	teq	r0, #13
+    9e94:	1afffff6 	bne	9e74 <readLoop$>
+    9e98:	e3a0000a 	mov	r0, #10
+    9e9c:	ebffffd6 	bl	9dfc <PutCharUART>
+    9ea0:	e2444001 	sub	r4, r4, #1
+    9ea4:	e3a00000 	mov	r0, #0
+    9ea8:	e5c40000 	strb	r0, [r4]
+
+00009eac <readLoopEnd$>:
+    9eac:	e2460001 	sub	r0, r6, #1
+    9eb0:	e8bd8070 	pop	{r4, r5, r6, pc}
+
+00009eb4 <WaitForCycles>:
+    9eb4:	e2400001 	sub	r0, r0, #1
+    9eb8:	e3500000 	cmp	r0, #0
+    9ebc:	aafffffc 	bge	9eb4 <WaitForCycles>
+    9ec0:	e1a0f00e 	mov	pc, lr
+    9ec4:	3f215004 	.word	0x3f215004
+    9ec8:	3f215044 	.word	0x3f215044
+    9ecc:	3f215060 	.word	0x3f215060
+    9ed0:	3f21504c 	.word	0x3f21504c
+    9ed4:	3f215050 	.word	0x3f215050
+    9ed8:	3f215048 	.word	0x3f215048
+    9edc:	3f215068 	.word	0x3f215068
+    9ee0:	0000010e 	.word	0x0000010e
+    9ee4:	3f200094 	.word	0x3f200094
+    9ee8:	3f200098 	.word	0x3f200098
+    9eec:	3f215054 	.word	0x3f215054
+    9ef0:	3f215040 	.word	0x3f215040
+
+00009ef4 <GetGpioAddress>:
+    9ef4:	e59f00cc 	ldr	r0, [pc, #204]	; 9fc8 <GetGpio+0x44>
+    9ef8:	e1a0f00e 	mov	pc, lr
+
+00009efc <SetGpioFunction>:
+    9efc:	e3500035 	cmp	r0, #53	; 0x35
+    9f00:	93510007 	cmpls	r1, #7
+    9f04:	81a0f00e 	movhi	pc, lr
+    9f08:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    9f0c:	e1a02000 	mov	r2, r0
+    9f10:	ebfffff7 	bl	9ef4 <GetGpioAddress>
+
+00009f14 <functionLoop$>:
+    9f14:	e3520009 	cmp	r2, #9
+    9f18:	8242200a 	subhi	r2, r2, #10
+    9f1c:	82800004 	addhi	r0, r0, #4
+    9f20:	8afffffb 	bhi	9f14 <functionLoop$>
+    9f24:	e0822082 	add	r2, r2, r2, lsl #1
+    9f28:	e1a01211 	lsl	r1, r1, r2
+    9f2c:	e3a03007 	mov	r3, #7
+    9f30:	e1a03213 	lsl	r3, r3, r2
+    9f34:	e5902000 	ldr	r2, [r0]
+    9f38:	e1c22003 	bic	r2, r2, r3
+    9f3c:	e1811002 	orr	r1, r1, r2
+    9f40:	e5801000 	str	r1, [r0]
+    9f44:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+00009f48 <SetGpio>:
+    9f48:	e3500035 	cmp	r0, #53	; 0x35
+    9f4c:	81a0f00e 	movhi	pc, lr
+    9f50:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    9f54:	e1a02000 	mov	r2, r0
+    9f58:	ebffffe5 	bl	9ef4 <GetGpioAddress>
+    9f5c:	e1a032a2 	lsr	r3, r2, #5
+    9f60:	e1a03103 	lsl	r3, r3, #2
+    9f64:	e0800003 	add	r0, r0, r3
+    9f68:	e202201f 	and	r2, r2, #31
+    9f6c:	e3a03001 	mov	r3, #1
+    9f70:	e1a03213 	lsl	r3, r3, r2
+    9f74:	e3310000 	teq	r1, #0
+    9f78:	05803028 	streq	r3, [r0, #40]	; 0x28
+    9f7c:	1580301c 	strne	r3, [r0, #28]
+    9f80:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+00009f84 <GetGpio>:
+    9f84:	e3500035 	cmp	r0, #53	; 0x35
+    9f88:	81a0f00e 	movhi	pc, lr
+    9f8c:	e92d4010 	push	{r4, lr}
+    9f90:	e1a04000 	mov	r4, r0
+    9f94:	ebffffd6 	bl	9ef4 <GetGpioAddress>
+    9f98:	e1a032a4 	lsr	r3, r4, #5
+    9f9c:	e1a03103 	lsl	r3, r3, #2
+    9fa0:	e0800003 	add	r0, r0, r3
+    9fa4:	e204401f 	and	r4, r4, #31
+    9fa8:	e3a03001 	mov	r3, #1
+    9fac:	e1a03413 	lsl	r3, r3, r4
+    9fb0:	e5904034 	ldr	r4, [r0, #52]	; 0x34
+    9fb4:	e0044003 	and	r4, r4, r3
+    9fb8:	e3340000 	teq	r4, #0
+    9fbc:	03a00000 	moveq	r0, #0
+    9fc0:	13a00001 	movne	r0, #1
+    9fc4:	e8bd8010 	pop	{r4, pc}
+    9fc8:	3f200000 	.word	0x3f200000

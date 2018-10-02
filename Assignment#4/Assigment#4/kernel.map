@@ -1,0 +1,226 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD build/main.o
+LOAD build/jtag.o
+LOAD build/framebuffer.o
+LOAD build/draw.o
+LOAD build/drawMap.o
+LOAD build/game.o
+LOAD build/drawMenu.o
+LOAD build/data.o
+LOAD build/controllers.o
+LOAD uart.o
+LOAD gpio.o
+
+.init           0x00008000        0x4
+ *(.init)
+ .init          0x00008000        0x4 build/main.o
+                0x00008000                _start
+
+.data           0x00009080       0x70
+ *(.data)
+ .data          0x00009080        0x0 build/main.o
+ .data          0x00009080        0x0 build/jtag.o
+ .data          0x00009080       0x70 build/framebuffer.o
+                0x000090e0                FrameBufferPointer
+ .data          0x000090f0        0x0 build/draw.o
+ .data          0x000090f0        0x0 build/drawMap.o
+ .data          0x000090f0        0x0 build/game.o
+ .data          0x000090f0        0x0 build/drawMenu.o
+ .data          0x000090f0        0x0 build/data.o
+ .data          0x000090f0        0x0 build/controllers.o
+ .data          0x000090f0        0x0 uart.o
+ .data          0x000090f0        0x0 gpio.o
+ *.c.o(*)
+
+.igot.plt       0x000090f0        0x0
+ .igot.plt      0x00000000        0x0 build/main.o
+
+.text           0x000090f0   0x189f00
+ *.c.o(.text)
+ *(.text)
+ .text          0x000090f0       0x1c build/main.o
+ .text          0x0000910c       0x8c build/jtag.o
+                0x0000910c                EnableJTAG
+ .text          0x00009198       0x80 build/framebuffer.o
+                0x00009198                InitFrameBuffer
+ .text          0x00009218       0x74 build/draw.o
+                0x00009218                DrawPixel
+                0x00009238                drawPicture
+ .text          0x0000928c      0x400 build/drawMap.o
+                0x0000928c                drawFirstMap
+ .text          0x0000968c       0x10 build/game.o
+                0x0000968c                StartGame
+ .text          0x0000969c       0xc8 build/drawMenu.o
+                0x0000969c                drawIntroduction
+                0x000096c0                drawIndicatorAtStart
+                0x000096e4                clearIndicatorAtStart
+                0x00009708                drawIndicatorAtQuit
+                0x0000972c                clearIndicatorAtQuit
+ .text          0x00009764   0x189300 build/data.o
+                0x00009764                Intro
+                0x00189764                Indicator
+                0x00189f64                Sky
+                0x0018a764                Floor
+                0x0018af64                Plant31
+                0x0018b764                Plant32
+                0x0018bf64                Plant33
+                0x0018c764                Tube41
+                0x0018cf64                Tube42
+                0x0018d764                Tube43
+                0x0018df64                Tube44
+                0x0018e764                Tube45
+                0x0018ef64                Tube46
+                0x0018f764                Block
+                0x0018ff64                Box
+                0x00190764                Cloud71
+                0x00190f64                Cloud72
+                0x00191764                Cloud73
+                0x00191f64                Cloud74
+                0x00192764                FirstMap
+                0x00192a64                endFirstMap
+ .text          0x00192a64      0x2fc build/controllers.o
+                0x00192a64                controller
+                0x00192be0                Init_GPIO
+                0x00192c04                setClock
+                0x00192c28                setData
+                0x00192c48                WriteClock
+                0x00192c68                WriteLatch
+                0x00192c88                ReadData
+                0x00192cb0                Wait
+                0x00192cd0                Read_SNES
+ .text          0x00192d60      0x1b8 uart.o
+                0x00192d60                InitUART
+                0x00192e20                PutCharUART
+                0x00192e3c                GetCharUART
+                0x00192e58                WriteStringUART
+                0x00192e88                ReadLineUART
+ .text          0x00192f18       0xd8 gpio.o
+                0x00192f18                GetGpioAddress
+                0x00192f20                SetGpioFunction
+                0x00192f6c                SetGpio
+                0x00192fa8                GetGpio
+OUTPUT(build/output.elf elf32-littlearm)
+
+.glue_7         0x00192ff0        0x0
+ .glue_7        0x00000000        0x0 linker stubs
+
+.glue_7t        0x00192ff0        0x0
+ .glue_7t       0x00000000        0x0 linker stubs
+
+.vfp11_veneer   0x00192ff0        0x0
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+
+.v4_bx          0x00192ff0        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.iplt           0x00192ff0        0x0
+ .iplt          0x00000000        0x0 build/main.o
+
+.rel.dyn        0x00192ff0        0x0
+ .rel.iplt      0x00000000        0x0 build/main.o
+
+.bss            0x00192ff0        0x0
+ .bss           0x00192ff0        0x0 build/main.o
+ .bss           0x00192ff0        0x0 build/jtag.o
+ .bss           0x00192ff0        0x0 build/framebuffer.o
+ .bss           0x00192ff0        0x0 build/draw.o
+ .bss           0x00192ff0        0x0 build/drawMap.o
+ .bss           0x00192ff0        0x0 build/game.o
+ .bss           0x00192ff0        0x0 build/drawMenu.o
+ .bss           0x00192ff0        0x0 build/data.o
+ .bss           0x00192ff0        0x0 build/controllers.o
+ .bss           0x00192ff0        0x0 uart.o
+ .bss           0x00192ff0        0x0 gpio.o
+
+.ARM.attributes
+                0x00000000       0x29
+ .ARM.attributes
+                0x00000000       0x29 build/main.o
+ .ARM.attributes
+                0x00000029       0x29 build/jtag.o
+ .ARM.attributes
+                0x00000052       0x29 build/framebuffer.o
+ .ARM.attributes
+                0x0000007b       0x29 build/draw.o
+ .ARM.attributes
+                0x000000a4       0x29 build/drawMap.o
+ .ARM.attributes
+                0x000000cd       0x29 build/game.o
+ .ARM.attributes
+                0x000000f6       0x29 build/drawMenu.o
+ .ARM.attributes
+                0x0000011f       0x29 build/data.o
+ .ARM.attributes
+                0x00000148       0x29 build/controllers.o
+ .ARM.attributes
+                0x00000171       0x29 uart.o
+ .ARM.attributes
+                0x0000019a       0x29 gpio.o
+
+.debug_line     0x00000000      0x5c7
+ .debug_line    0x00000000       0x52 build/main.o
+ .debug_line    0x00000052       0x61 build/jtag.o
+ .debug_line    0x000000b3       0x67 build/framebuffer.o
+ .debug_line    0x0000011a       0x5b build/draw.o
+ .debug_line    0x00000175      0x162 build/drawMap.o
+ .debug_line    0x000002d7       0x3e build/game.o
+ .debug_line    0x00000315       0x77 build/drawMenu.o
+ .debug_line    0x0000038c      0x10b build/controllers.o
+ .debug_line    0x00000497       0xb7 uart.o
+ .debug_line    0x0000054e       0x79 gpio.o
+
+.debug_info     0x00000000      0x494
+ .debug_info    0x00000000       0x71 build/main.o
+ .debug_info    0x00000071       0x76 build/jtag.o
+ .debug_info    0x000000e7       0x7c build/framebuffer.o
+ .debug_info    0x00000163       0x75 build/draw.o
+ .debug_info    0x000001d8       0x78 build/drawMap.o
+ .debug_info    0x00000250       0x75 build/game.o
+ .debug_info    0x000002c5       0x79 build/drawMenu.o
+ .debug_info    0x0000033e       0x7c build/controllers.o
+ .debug_info    0x000003ba       0x6d uart.o
+ .debug_info    0x00000427       0x6d gpio.o
+
+.debug_abbrev   0x00000000       0xc6
+ .debug_abbrev  0x00000000       0x12 build/main.o
+ .debug_abbrev  0x00000012       0x14 build/jtag.o
+ .debug_abbrev  0x00000026       0x14 build/framebuffer.o
+ .debug_abbrev  0x0000003a       0x14 build/draw.o
+ .debug_abbrev  0x0000004e       0x14 build/drawMap.o
+ .debug_abbrev  0x00000062       0x14 build/game.o
+ .debug_abbrev  0x00000076       0x14 build/drawMenu.o
+ .debug_abbrev  0x0000008a       0x14 build/controllers.o
+ .debug_abbrev  0x0000009e       0x14 uart.o
+ .debug_abbrev  0x000000b2       0x14 gpio.o
+
+.debug_aranges  0x00000000      0x148
+ .debug_aranges
+                0x00000000       0x28 build/main.o
+ .debug_aranges
+                0x00000028       0x20 build/jtag.o
+ .debug_aranges
+                0x00000048       0x20 build/framebuffer.o
+ .debug_aranges
+                0x00000068       0x20 build/draw.o
+ .debug_aranges
+                0x00000088       0x20 build/drawMap.o
+ .debug_aranges
+                0x000000a8       0x20 build/game.o
+ .debug_aranges
+                0x000000c8       0x20 build/drawMenu.o
+ .debug_aranges
+                0x000000e8       0x20 build/controllers.o
+ .debug_aranges
+                0x00000108       0x20 uart.o
+ .debug_aranges
+                0x00000128       0x20 gpio.o
+
+.debug_ranges   0x00000000       0x20
+ .debug_ranges  0x00000000       0x20 build/main.o

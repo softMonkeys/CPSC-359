@@ -1,0 +1,459 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD build/main.o
+LOAD build/score.o
+LOAD build/controller2.o
+LOAD build/jtag.o
+LOAD build/framebuffer.o
+LOAD build/move.o
+LOAD build/stateOperation.o
+LOAD build/type.o
+LOAD build/draw.o
+LOAD build/game.o
+LOAD build/typeRotateUp.o
+LOAD build/controller4.o
+LOAD build/controller3.o
+LOAD build/typeRotateDown.o
+LOAD build/random.o
+LOAD build/data.o
+LOAD build/gameState.o
+LOAD build/pause.o
+LOAD build/drawScreen.o
+LOAD build/Screen.o
+LOAD build/controller1.o
+LOAD build/tetrimino.o
+
+.init           0x00008000        0x4
+ *(.init)
+ .init          0x00008000        0x4 build/main.o
+                0x00008000                _start
+
+.data           0x00009080   0x203350
+ *(.data)
+ .data          0x00009080        0x0 build/main.o
+ .data          0x00009080        0x0 build/score.o
+ .data          0x00009080        0x0 build/controller2.o
+ .data          0x00009080        0x0 build/jtag.o
+ .data          0x00009080       0x70 build/framebuffer.o
+                0x000090e0                FrameBufferPointer
+ .data          0x000090f0        0x0 build/move.o
+ .data          0x000090f0        0x0 build/stateOperation.o
+ .data          0x000090f0        0x0 build/type.o
+ .data          0x000090f0        0x0 build/draw.o
+ .data          0x000090f0        0x0 build/game.o
+ .data          0x000090f0        0x0 build/typeRotateUp.o
+ .data          0x000090f0        0x0 build/controller4.o
+ .data          0x000090f0        0x0 build/controller3.o
+ .data          0x000090f0        0x0 build/typeRotateDown.o
+ .data          0x000090f0       0x10 build/random.o
+ .data          0x00009100   0x202e98 build/data.o
+                0x00009100                picGameO
+                0x000520f8                Ch_G
+                0x00053d18                picGameOver
+                0x0007fc38                xl
+                0x0012f8b8                Tetris
+                0x0017dab8                Creator
+                0x00181d74                Name
+                0x00187184                Start
+                0x0018a21c                Quit
+                0x0018c6f2                Pointer
+                0x0018d084                PointerClear
+                0x0018da16                blackCell
+                0x0018e216                whiteCell
+                0x0018ea16                yellowCell
+                0x0018f216                blueCell
+                0x0018fa16                greenCell
+                0x00190216                pinkCell
+                0x00190a16                orangeCell
+                0x00191216                purpleCell
+                0x00191a16                redCell
+                0x00192216                picGameWon
+                0x001be136                picNumber0
+                0x001c0136                picNumber1
+                0x001c2136                picNumber2
+                0x001c4136                picNumber3
+                0x001c6136                picNumber4
+                0x001c8136                picNumber5
+                0x001ca136                picNumber6
+                0x001cc136                picNumber7
+                0x001ce136                picNumber8
+                0x001d0136                picNumber9
+                0x001d2136                picNumberC
+                0x001d4136                picReStartC
+                0x001d5ec0                picQuitC
+                0x001e0e88                picReStart
+                0x001f6710                picRestartClear
+ .data          0x0020bf98      0x438 build/gameState.o
+                0x0020bf98                currentGameState
+                0x0020c097                preGameState
+                0x0020c196                currentTetrimino
+                0x0020c1a0                preTetrimino
+                0x0020c1aa                rowState
+                0x0020c1b4                IcurrentGameState
+                0x0020c2b3                IpreGameState
+                0x0020c3b2                IcurrentTetrimino
+                0x0020c3bc                IpreTetrimino
+                0x0020c3c6                IrowState
+ .data          0x0020c3d0        0x0 build/pause.o
+ .data          0x0020c3d0        0x0 build/drawScreen.o
+ .data          0x0020c3d0        0x0 build/Screen.o
+ .data          0x0020c3d0        0x0 build/controller1.o
+ .data          0x0020c3d0        0x0 build/tetrimino.o
+ *.c.o(*)
+
+.igot.plt       0x0020c3d0        0x0
+ .igot.plt      0x00000000        0x0 build/main.o
+
+.text           0x0020c3d0     0x2540
+ *.c.o(.text)
+ *(.text)
+ .text          0x0020c3d0       0x20 build/main.o
+ .text          0x0020c3f0      0x2b4 build/score.o
+                0x0020c3f0                drawNumber
+                0x0020c4c4                drawScore
+                0x0020c53c                drawNumber0
+                0x0020c558                drawNumber1
+                0x0020c574                drawNumber2
+                0x0020c590                drawNumber3
+                0x0020c5ac                drawNumber4
+                0x0020c5c8                drawNumber5
+                0x0020c5e4                drawNumber6
+                0x0020c600                drawNumber7
+                0x0020c61c                drawNumber8
+                0x0020c638                drawNumber9
+                0x0020c654                clearNumber
+ .text          0x0020c6a4      0x29c build/controller2.o
+                0x0020c6a4                controller2
+                0x0020c7f4                moveLeft_C2
+                0x0020c820                moveRight_C2
+                0x0020c84c                moveDown_C2
+                0x0020c8c8                rotateUp_C2
+                0x0020c8f4                rotateDown_C2
+ .text          0x0020c940       0x8c build/jtag.o
+                0x0020c940                EnableJTAG
+ .text          0x0020c9cc       0x80 build/framebuffer.o
+                0x0020c9cc                InitFrameBuffer
+ .text          0x0020ca4c      0x188 build/move.o
+                0x0020ca4c                moveLeft
+                0x0020ca78                moveRight
+                0x0020caa4                moveDown
+                0x0020cad0                rotateUp
+                0x0020cb50                rotateDown
+ .text          0x0020cbd4      0x57c build/stateOperation.o
+                0x0020cbd4                copyState
+                0x0020cc00                upDate
+                0x0020cc48                valid
+                0x0020ccf0                intoScreen
+                0x0020cd38                upDateGenerate
+                0x0020cd8c                checkLose
+                0x0020cdc4                checkWin
+                0x0020cdec                checkState
+                0x0020ce14                checkRowFull
+                0x0020ce60                checkRowEmpty
+                0x0020ceac                clearRow
+                0x0020cee8                clearFullRows
+                0x0020cf50                readRow
+                0x0020cf90                WriteRow
+                0x0020cfd0                dropRow
+                0x0020d060                addScore
+                0x0020d07c                initAllState
+ .text          0x0020d150      0x4d4 build/type.o
+                0x0020d150                type1_1
+                0x0020d190                type1_2
+                0x0020d1d0                type1_3
+                0x0020d210                type1_4
+                0x0020d250                type2_1
+                0x0020d28c                type2_2
+                0x0020d2c8                type2_3
+                0x0020d304                type2_4
+                0x0020d340                type3_1
+                0x0020d37c                type3_2
+                0x0020d3b8                type3_3
+                0x0020d3f4                type3_4
+                0x0020d430                type4_1
+                0x0020d46c                type4_2
+                0x0020d4a8                type4_3
+                0x0020d4e4                type4_4
+                0x0020d520                type6_1
+                0x0020d560                type6_2
+                0x0020d5a0                type7_1
+                0x0020d5e0                type7_2
+ .text          0x0020d624       0x74 build/draw.o
+                0x0020d624                DrawPixel
+                0x0020d644                drawPicture
+ .text          0x0020d698       0xb0 build/game.o
+                0x0020d698                StartGame
+                0x0020d6cc                QuitGame
+                0x0020d6d4                win
+                0x0020d6fc                lose
+                0x0020d724                reStart
+                0x0020d738                GameEnd
+ .text          0x0020d748      0x25c build/typeRotateUp.o
+                0x0020d748                type1_rotateUp
+                0x0020d7bc                type2_rotateUp
+                0x0020d830                type3_rotateUp
+                0x0020d8a4                type4_rotateUp
+                0x0020d918                type6_rotateUp
+                0x0020d95c                type7_rotateUp
+ .text          0x0020d9a4      0x1b8 build/controller4.o
+                0x0020d9a4                controller4
+ .text          0x0020db5c       0x3c build/controller3.o
+                0x0020db5c                controller3
+ .text          0x0020db98      0x25c build/typeRotateDown.o
+                0x0020db98                type1_rotateDown
+                0x0020dc0c                type2_rotateDown
+                0x0020dc80                type3_rotateDown
+                0x0020dcf4                type4_rotateDown
+                0x0020dd68                type6_rotateDown
+                0x0020ddac                type7_rotateDown
+ .text          0x0020ddf4       0x80 build/random.o
+                0x0020ddf4                randomNumber
+ .text          0x0020de74        0x0 build/data.o
+ .text          0x0020de74        0x0 build/gameState.o
+ .text          0x0020de74       0xf4 build/pause.o
+                0x0020de74                pause
+                0x0020deb8                drawPointerStartP
+                0x0020dedc                clearPointerStartP
+                0x0020df00                drawPointerQuitP
+                0x0020df24                clearPointerQuitP
+ .text          0x0020df68      0x3cc build/drawScreen.o
+                0x0020df68                drawMainMenu
+                0x0020dfec                drawPointerStartM
+                0x0020e010                clearPointerStartM
+                0x0020e034                drawPointerQuitM
+                0x0020e058                clearPointerQuitM
+                0x0020e07c                drawBlackCell
+                0x0020e098                drawYellowCell
+                0x0020e0b4                drawWhiteCell
+                0x0020e0d0                drawBlueCell
+                0x0020e0ec                drawGreenCell
+                0x0020e108                drawPinkCell
+                0x0020e124                drawOrangeCell
+                0x0020e140                drawPurpleCell
+                0x0020e15c                drawRedCell
+                0x0020e178                cmpDrawScreen
+                0x0020e25c                drawCurrentGameScreen
+ .text          0x0020e334       0x78 build/Screen.o
+                0x0020e354                clearScreen
+ .text          0x0020e3ac      0x2c0 build/controller1.o
+                0x0020e3ac                controller
+                0x0020e4f4                Init_GPIO
+                0x0020e518                setClock
+                0x0020e53c                setData
+                0x0020e55c                WriteClock
+                0x0020e57c                WriteLatch
+                0x0020e59c                ReadData
+                0x0020e5c4                Wait
+                0x0020e5e0                Read_SNES
+ .text          0x0020e66c      0x2a4 build/tetrimino.o
+                0x0020e66c                random
+                0x0020e6c8                generate
+                0x0020e8c0                calOffset
+                0x0020e8dc                copyTetrimino
+OUTPUT(build/output.elf elf32-littlearm)
+
+.glue_7         0x0020e910        0x0
+ .glue_7        0x00000000        0x0 linker stubs
+
+.glue_7t        0x0020e910        0x0
+ .glue_7t       0x00000000        0x0 linker stubs
+
+.vfp11_veneer   0x0020e910        0x0
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+
+.v4_bx          0x0020e910        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.iplt           0x0020e910        0x0
+ .iplt          0x00000000        0x0 build/main.o
+
+.rel.dyn        0x0020e910        0x0
+ .rel.iplt      0x00000000        0x0 build/main.o
+
+.bss            0x0020e910        0x0
+ .bss           0x0020e910        0x0 build/main.o
+ .bss           0x0020e910        0x0 build/score.o
+ .bss           0x0020e910        0x0 build/controller2.o
+ .bss           0x0020e910        0x0 build/jtag.o
+ .bss           0x0020e910        0x0 build/framebuffer.o
+ .bss           0x0020e910        0x0 build/move.o
+ .bss           0x0020e910        0x0 build/stateOperation.o
+ .bss           0x0020e910        0x0 build/type.o
+ .bss           0x0020e910        0x0 build/draw.o
+ .bss           0x0020e910        0x0 build/game.o
+ .bss           0x0020e910        0x0 build/typeRotateUp.o
+ .bss           0x0020e910        0x0 build/controller4.o
+ .bss           0x0020e910        0x0 build/controller3.o
+ .bss           0x0020e910        0x0 build/typeRotateDown.o
+ .bss           0x0020e910        0x0 build/random.o
+ .bss           0x0020e910        0x0 build/data.o
+ .bss           0x0020e910        0x0 build/gameState.o
+ .bss           0x0020e910        0x0 build/pause.o
+ .bss           0x0020e910        0x0 build/drawScreen.o
+ .bss           0x0020e910        0x0 build/Screen.o
+ .bss           0x0020e910        0x0 build/controller1.o
+ .bss           0x0020e910        0x0 build/tetrimino.o
+
+.ARM.attributes
+                0x00000000       0x29
+ .ARM.attributes
+                0x00000000       0x29 build/main.o
+ .ARM.attributes
+                0x00000029       0x29 build/score.o
+ .ARM.attributes
+                0x00000052       0x29 build/controller2.o
+ .ARM.attributes
+                0x0000007b       0x29 build/jtag.o
+ .ARM.attributes
+                0x000000a4       0x29 build/framebuffer.o
+ .ARM.attributes
+                0x000000cd       0x29 build/move.o
+ .ARM.attributes
+                0x000000f6       0x29 build/stateOperation.o
+ .ARM.attributes
+                0x0000011f       0x29 build/type.o
+ .ARM.attributes
+                0x00000148       0x29 build/draw.o
+ .ARM.attributes
+                0x00000171       0x29 build/game.o
+ .ARM.attributes
+                0x0000019a       0x29 build/typeRotateUp.o
+ .ARM.attributes
+                0x000001c3       0x29 build/controller4.o
+ .ARM.attributes
+                0x000001ec       0x29 build/controller3.o
+ .ARM.attributes
+                0x00000215       0x29 build/typeRotateDown.o
+ .ARM.attributes
+                0x0000023e       0x29 build/random.o
+ .ARM.attributes
+                0x00000267       0x29 build/data.o
+ .ARM.attributes
+                0x00000290       0x29 build/gameState.o
+ .ARM.attributes
+                0x000002b9       0x29 build/pause.o
+ .ARM.attributes
+                0x000002e2       0x29 build/drawScreen.o
+ .ARM.attributes
+                0x0000030b       0x29 build/Screen.o
+ .ARM.attributes
+                0x00000334       0x29 build/controller1.o
+ .ARM.attributes
+                0x0000035d       0x29 build/tetrimino.o
+
+.debug_line     0x00000000      0xee0
+ .debug_line    0x00000000       0x51 build/main.o
+ .debug_line    0x00000051      0x105 build/score.o
+ .debug_line    0x00000156       0xeb build/controller2.o
+ .debug_line    0x00000241       0x61 build/jtag.o
+ .debug_line    0x000002a2       0x67 build/framebuffer.o
+ .debug_line    0x00000309       0x9f build/move.o
+ .debug_line    0x000003a8      0x1c0 build/stateOperation.o
+ .debug_line    0x00000568      0x172 build/type.o
+ .debug_line    0x000006da       0x5d build/draw.o
+ .debug_line    0x00000737       0x6a build/game.o
+ .debug_line    0x000007a1       0xdc build/typeRotateUp.o
+ .debug_line    0x0000087d       0xb4 build/controller4.o
+ .debug_line    0x00000931       0x54 build/controller3.o
+ .debug_line    0x00000985       0xde build/typeRotateDown.o
+ .debug_line    0x00000a63       0x5e build/random.o
+ .debug_line    0x00000ac1       0x7f build/pause.o
+ .debug_line    0x00000b40      0x152 build/drawScreen.o
+ .debug_line    0x00000c92       0x60 build/Screen.o
+ .debug_line    0x00000cf2       0xfc build/controller1.o
+ .debug_line    0x00000dee       0xf2 build/tetrimino.o
+
+.debug_info     0x00000000      0x840
+ .debug_info    0x00000000       0x63 build/main.o
+ .debug_info    0x00000063       0x68 build/score.o
+ .debug_info    0x000000cb       0x6e build/controller2.o
+ .debug_info    0x00000139       0x62 build/jtag.o
+ .debug_info    0x0000019b       0x69 build/framebuffer.o
+ .debug_info    0x00000204       0x67 build/move.o
+ .debug_info    0x0000026b       0x71 build/stateOperation.o
+ .debug_info    0x000002dc       0x67 build/type.o
+ .debug_info    0x00000343       0x67 build/draw.o
+ .debug_info    0x000003aa       0x67 build/game.o
+ .debug_info    0x00000411       0x6f build/typeRotateUp.o
+ .debug_info    0x00000480       0x60 build/controller4.o
+ .debug_info    0x000004e0       0x6e build/controller3.o
+ .debug_info    0x0000054e       0x71 build/typeRotateDown.o
+ .debug_info    0x000005bf       0x69 build/random.o
+ .debug_info    0x00000628       0x68 build/pause.o
+ .debug_info    0x00000690       0x6d build/drawScreen.o
+ .debug_info    0x000006fd       0x69 build/Screen.o
+ .debug_info    0x00000766       0x6e build/controller1.o
+ .debug_info    0x000007d4       0x6c build/tetrimino.o
+
+.debug_abbrev   0x00000000      0x18e
+ .debug_abbrev  0x00000000       0x12 build/main.o
+ .debug_abbrev  0x00000012       0x14 build/score.o
+ .debug_abbrev  0x00000026       0x14 build/controller2.o
+ .debug_abbrev  0x0000003a       0x14 build/jtag.o
+ .debug_abbrev  0x0000004e       0x14 build/framebuffer.o
+ .debug_abbrev  0x00000062       0x14 build/move.o
+ .debug_abbrev  0x00000076       0x14 build/stateOperation.o
+ .debug_abbrev  0x0000008a       0x14 build/type.o
+ .debug_abbrev  0x0000009e       0x14 build/draw.o
+ .debug_abbrev  0x000000b2       0x14 build/game.o
+ .debug_abbrev  0x000000c6       0x14 build/typeRotateUp.o
+ .debug_abbrev  0x000000da       0x14 build/controller4.o
+ .debug_abbrev  0x000000ee       0x14 build/controller3.o
+ .debug_abbrev  0x00000102       0x14 build/typeRotateDown.o
+ .debug_abbrev  0x00000116       0x14 build/random.o
+ .debug_abbrev  0x0000012a       0x14 build/pause.o
+ .debug_abbrev  0x0000013e       0x14 build/drawScreen.o
+ .debug_abbrev  0x00000152       0x14 build/Screen.o
+ .debug_abbrev  0x00000166       0x14 build/controller1.o
+ .debug_abbrev  0x0000017a       0x14 build/tetrimino.o
+
+.debug_aranges  0x00000000      0x288
+ .debug_aranges
+                0x00000000       0x28 build/main.o
+ .debug_aranges
+                0x00000028       0x20 build/score.o
+ .debug_aranges
+                0x00000048       0x20 build/controller2.o
+ .debug_aranges
+                0x00000068       0x20 build/jtag.o
+ .debug_aranges
+                0x00000088       0x20 build/framebuffer.o
+ .debug_aranges
+                0x000000a8       0x20 build/move.o
+ .debug_aranges
+                0x000000c8       0x20 build/stateOperation.o
+ .debug_aranges
+                0x000000e8       0x20 build/type.o
+ .debug_aranges
+                0x00000108       0x20 build/draw.o
+ .debug_aranges
+                0x00000128       0x20 build/game.o
+ .debug_aranges
+                0x00000148       0x20 build/typeRotateUp.o
+ .debug_aranges
+                0x00000168       0x20 build/controller4.o
+ .debug_aranges
+                0x00000188       0x20 build/controller3.o
+ .debug_aranges
+                0x000001a8       0x20 build/typeRotateDown.o
+ .debug_aranges
+                0x000001c8       0x20 build/random.o
+ .debug_aranges
+                0x000001e8       0x20 build/pause.o
+ .debug_aranges
+                0x00000208       0x20 build/drawScreen.o
+ .debug_aranges
+                0x00000228       0x20 build/Screen.o
+ .debug_aranges
+                0x00000248       0x20 build/controller1.o
+ .debug_aranges
+                0x00000268       0x20 build/tetrimino.o
+
+.debug_ranges   0x00000000       0x20
+ .debug_ranges  0x00000000       0x20 build/main.o

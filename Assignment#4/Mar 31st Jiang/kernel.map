@@ -1,0 +1,522 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD build/drawLives.o
+LOAD build/main.o
+LOAD build/gamePulse.o
+LOAD build/MapTransition.o
+LOAD build/draw.o
+LOAD build/drawCoinNumber.o
+LOAD build/jtag.o
+LOAD build/framebuffer.o
+LOAD build/updateLives.o
+LOAD build/turtle.o
+LOAD build/drawScores.o
+LOAD build/drawMap.o
+LOAD build/game.o
+LOAD build/mushRoom.o
+LOAD build/marioJumpAndMoveR.o
+LOAD build/marioMove.o
+LOAD build/drawMenu.o
+LOAD build/drawMap1.o
+LOAD build/marioJumpAndMoveL.o
+LOAD build/resetGameMap.o
+LOAD build/data.o
+LOAD build/updateCoinNumber.o
+LOAD build/controllers.o
+LOAD build/controllers1.o
+LOAD build/updateScores.o
+LOAD build/drawMap2.o
+LOAD build/controllers2.o
+LOAD uart.o
+LOAD gpio.o
+
+.init           0x00008000        0x4
+ *(.init)
+ .init          0x00008000        0x4 build/main.o
+                0x00008000                _start
+
+.data           0x00009080       0x70
+ *(.data)
+ .data          0x00009080        0x0 build/drawLives.o
+ .data          0x00009080        0x0 build/main.o
+ .data          0x00009080        0x0 build/gamePulse.o
+ .data          0x00009080        0x0 build/MapTransition.o
+ .data          0x00009080        0x0 build/draw.o
+ .data          0x00009080        0x0 build/drawCoinNumber.o
+ .data          0x00009080        0x0 build/jtag.o
+ .data          0x00009080       0x70 build/framebuffer.o
+                0x000090e0                FrameBufferPointer
+ .data          0x000090f0        0x0 build/updateLives.o
+ .data          0x000090f0        0x0 build/turtle.o
+ .data          0x000090f0        0x0 build/drawScores.o
+ .data          0x000090f0        0x0 build/drawMap.o
+ .data          0x000090f0        0x0 build/game.o
+ .data          0x000090f0        0x0 build/mushRoom.o
+ .data          0x000090f0        0x0 build/marioJumpAndMoveR.o
+ .data          0x000090f0        0x0 build/marioMove.o
+ .data          0x000090f0        0x0 build/drawMenu.o
+ .data          0x000090f0        0x0 build/drawMap1.o
+ .data          0x000090f0        0x0 build/marioJumpAndMoveL.o
+ .data          0x000090f0        0x0 build/resetGameMap.o
+ .data          0x000090f0        0x0 build/data.o
+ .data          0x000090f0        0x0 build/updateCoinNumber.o
+ .data          0x000090f0        0x0 build/controllers.o
+ .data          0x000090f0        0x0 build/controllers1.o
+ .data          0x000090f0        0x0 build/updateScores.o
+ .data          0x000090f0        0x0 build/drawMap2.o
+ .data          0x000090f0        0x0 build/controllers2.o
+ .data          0x000090f0        0x0 uart.o
+ .data          0x000090f0        0x0 gpio.o
+ *.c.o(*)
+
+.igot.plt       0x000090f0        0x0
+ .igot.plt      0x00000000        0x0 build/drawLives.o
+
+.text           0x000090f0   0x1c4d24
+ *.c.o(.text)
+ *(.text)
+ .text          0x000090f0      0x19c build/drawLives.o
+                0x000090f0                drawLiveOnTheScreen
+ .text          0x0000928c       0x1c build/main.o
+ .text          0x000092a8       0xf0 build/gamePulse.o
+                0x000092a8                drawPulse
+                0x000092cc                ClearPulseMenu
+                0x000092f0                drawIndicatorAtReStart
+                0x00009314                clearIndicatorAtReStart
+                0x00009338                drawIndicatorAtQuit1
+                0x0000935c                clearIndicatorAtQuit1
+ .text          0x00009398       0x64 build/MapTransition.o
+                0x00009398                GoToTheSecondMap
+                0x000093c8                GoToTheThirdMap
+ .text          0x000093fc      0x1ac build/draw.o
+                0x000093fc                DrawPixel
+                0x0000941c                drawPicture
+                0x0000946c                drawPicture2
+                0x000094cc                drawPicture3
+                0x0000952c                drawPicture4
+ .text          0x000095a8      0x300 build/drawCoinNumber.o
+                0x000095a8                drawCoinNumberOnTheScreen
+ .text          0x000098a8       0x8c build/jtag.o
+                0x000098a8                EnableJTAG
+ .text          0x00009934       0x80 build/framebuffer.o
+                0x00009934                InitFrameBuffer
+ .text          0x000099b4      0x1b4 build/updateLives.o
+                0x000099b4                LivesShowingOnTheScreen
+ .text          0x00009b68      0x284 build/turtle.o
+                0x00009b68                drawTurtle
+ .text          0x00009dec      0x5c8 build/drawScores.o
+                0x00009dec                drawScoreOnTheScreen
+ .text          0x0000a3b4      0x890 build/drawMap.o
+                0x0000a3b4                drawFirstMap
+ .text          0x0000ac44       0x7c build/game.o
+                0x0000ac44                StartGame
+                0x0000ac68                quitGame
+ .text          0x0000acc0      0x360 build/mushRoom.o
+                0x0000acc0                drawMushRoom
+ .text          0x0000b020      0x784 build/marioJumpAndMoveR.o
+                0x0000b020                marioJumpAndMoveForward
+ .text          0x0000b7a4      0xde0 build/marioMove.o
+                0x0000b7a4                drawMario
+                0x0000b7d8                marioJump
+                0x0000bdf0                marioWalkBackward
+                0x0000c184                marioWalkForward
+                0x0000c4f0                marioDie
+ .text          0x0000c584       0xc8 build/drawMenu.o
+                0x0000c584                drawIntroduction
+                0x0000c5a8                drawIndicatorAtStart
+                0x0000c5cc                clearIndicatorAtStart
+                0x0000c5f0                drawIndicatorAtQuit
+                0x0000c614                clearIndicatorAtQuit
+ .text          0x0000c64c      0x890 build/drawMap1.o
+                0x0000c64c                drawSecondMap
+ .text          0x0000cedc      0x78c build/marioJumpAndMoveL.o
+                0x0000cedc                marioJumpAndMoveBackward
+ .text          0x0000d668       0xc0 build/resetGameMap.o
+                0x0000d668                resetMap
+ .text          0x0000d728   0x1bec98 build/data.o
+                0x0000d728                checkTurtleDeath
+                0x0000d72c                TurtleXPosition
+                0x0000d730                TurtleYPosition
+                0x0000d734                checkTurtleTurn
+                0x0000d738                turtleLeftPicture
+                0x0000df38                turtleRightPicture
+                0x0000e738                turtleDiePicture
+                0x0000ef38                coinDisappearX
+                0x0000ef3c                coinDisappearY
+                0x0000ef40                drawCoin2
+                0x0000f740                Intro
+                0x0018f740                Indicator
+                0x0018ff40                Sky
+                0x00190740                Floor
+                0x00190f40                Plant31
+                0x00191740                Plant32
+                0x00191f40                Plant33
+                0x00192740                Tube41
+                0x00192f40                Tube42
+                0x00193740                Tube43
+                0x00193f40                Tube44
+                0x00194740                Tube45
+                0x00194f40                Tube46
+                0x00195740                Block
+                0x00195f40                Box
+                0x00196740                Cloud71
+                0x00196f40                Cloud72
+                0x00197740                Cloud73
+                0x00197f40                Cloud74
+                0x00198740                FirstMapCopy
+                0x00198a40                FirstMap
+                0x00198d40                checkMushroomTurn
+                0x00198d44                checkMushroomDeath
+                0x00198d48                marioDiePicture
+                0x00199548                pulsePicture
+                0x001a9268                skyToClearMenu
+                0x001b8f88                ClearPulseMenuIndicator
+                0x001b9788                pulseMenuIndicator
+                0x001b9f88                mushRoomRightPicture
+                0x001ba788                mushRoomLeftPicture
+                0x001baf88                mushRoomXPosition
+                0x001baf8c                mushRoomYPosition
+                0x001baf90                flyStop
+                0x001baf94                checkLeftOrRight
+                0x001baf98                numberOne
+                0x001bb798                numberTwo
+                0x001bbf98                numberThree
+                0x001bc798                numberFour
+                0x001bcf98                numberFive
+                0x001bd798                numberSix
+                0x001bdf98                numberSeven
+                0x001be798                numberEight
+                0x001bef98                numberNine
+                0x001bf798                StraightLine
+                0x001bff98                Live1
+                0x001c0798                Live2
+                0x001c0f98                Live3
+                0x001c1798                Live4
+                0x001c1f98                Live5
+                0x001c2798                WorldW
+                0x001c2f98                WorldO
+                0x001c3798                WorldR
+                0x001c3f98                WorldL
+                0x001c4798                WorldD
+                0x001c4f98                Coin
+                0x001c5798                Xsign
+                0x001c5f98                numberZero
+                0x001c6798                marioNameM
+                0x001c6f98                marioNameA
+                0x001c7798                marioNameR
+                0x001c7f98                marioNameI
+                0x001c8798                marioNameO
+                0x001c8f98                marioJumpLeftPicture
+                0x001c9798                BoxHit
+                0x001c9f98                MarioLeftStand
+                0x001ca798                MarioRightStand
+                0x001caf98                marioJumpRightPicture
+                0x001cb798                marioXPosition
+                0x001cb79c                marioYPosition
+                0x001cb7a0                lives
+                0x001cb7a4                scores
+                0x001cb7b4                coinNumber
+                0x001cb7bc                mapNumber
+                0x001cb7c0                SecondMapCopy
+                0x001cbac0                SecondMap
+                0x001cbdc0                ThirdMapCopy
+                0x001cc0c0                ThirdMap
+ .text          0x001cc3c0      0x330 build/updateCoinNumber.o
+                0x001cc3c0                coinNumberShowingOnTheScreen
+ .text          0x001cc6f0      0x300 build/controllers.o
+                0x001cc6f0                controller
+                0x001cc86c                Init_GPIO
+                0x001cc890                setClock
+                0x001cc8b4                setData
+                0x001cc8d4                WriteClock
+                0x001cc8f4                WriteLatch
+                0x001cc914                ReadData
+                0x001cc93c                Wait
+                0x001cc95c                Read_SNES
+ .text          0x001cc9f0      0x160 build/controllers1.o
+                0x001cc9f0                controller1
+ .text          0x001ccb50      0x638 build/updateScores.o
+                0x001ccb50                scoreShowingOnTheScreen
+ .text          0x001cd188      0x890 build/drawMap2.o
+                0x001cd188                drawThirdMap
+ .text          0x001cda18      0x16c build/controllers2.o
+                0x001cda18                controller2
+ .text          0x001cdb84      0x1b8 uart.o
+                0x001cdb84                InitUART
+                0x001cdc44                PutCharUART
+                0x001cdc60                GetCharUART
+                0x001cdc7c                WriteStringUART
+                0x001cdcac                ReadLineUART
+ .text          0x001cdd3c       0xd8 gpio.o
+                0x001cdd3c                GetGpioAddress
+                0x001cdd44                SetGpioFunction
+                0x001cdd90                SetGpio
+                0x001cddcc                GetGpio
+OUTPUT(build/output.elf elf32-littlearm)
+
+.glue_7         0x001cde14        0x0
+ .glue_7        0x00000000        0x0 linker stubs
+
+.glue_7t        0x001cde14        0x0
+ .glue_7t       0x00000000        0x0 linker stubs
+
+.vfp11_veneer   0x001cde14        0x0
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+
+.v4_bx          0x001cde14        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.iplt           0x001cde14        0x0
+ .iplt          0x00000000        0x0 build/drawLives.o
+
+.rel.dyn        0x001cde14        0x0
+ .rel.iplt      0x00000000        0x0 build/drawLives.o
+
+.bss            0x001cde14        0x0
+ .bss           0x001cde14        0x0 build/drawLives.o
+ .bss           0x001cde14        0x0 build/main.o
+ .bss           0x001cde14        0x0 build/gamePulse.o
+ .bss           0x001cde14        0x0 build/MapTransition.o
+ .bss           0x001cde14        0x0 build/draw.o
+ .bss           0x001cde14        0x0 build/drawCoinNumber.o
+ .bss           0x001cde14        0x0 build/jtag.o
+ .bss           0x001cde14        0x0 build/framebuffer.o
+ .bss           0x001cde14        0x0 build/updateLives.o
+ .bss           0x001cde14        0x0 build/turtle.o
+ .bss           0x001cde14        0x0 build/drawScores.o
+ .bss           0x001cde14        0x0 build/drawMap.o
+ .bss           0x001cde14        0x0 build/game.o
+ .bss           0x001cde14        0x0 build/mushRoom.o
+ .bss           0x001cde14        0x0 build/marioJumpAndMoveR.o
+ .bss           0x001cde14        0x0 build/marioMove.o
+ .bss           0x001cde14        0x0 build/drawMenu.o
+ .bss           0x001cde14        0x0 build/drawMap1.o
+ .bss           0x001cde14        0x0 build/marioJumpAndMoveL.o
+ .bss           0x001cde14        0x0 build/resetGameMap.o
+ .bss           0x001cde14        0x0 build/data.o
+ .bss           0x001cde14        0x0 build/updateCoinNumber.o
+ .bss           0x001cde14        0x0 build/controllers.o
+ .bss           0x001cde14        0x0 build/controllers1.o
+ .bss           0x001cde14        0x0 build/updateScores.o
+ .bss           0x001cde14        0x0 build/drawMap2.o
+ .bss           0x001cde14        0x0 build/controllers2.o
+ .bss           0x001cde14        0x0 uart.o
+ .bss           0x001cde14        0x0 gpio.o
+
+.ARM.attributes
+                0x00000000       0x29
+ .ARM.attributes
+                0x00000000       0x29 build/drawLives.o
+ .ARM.attributes
+                0x00000029       0x29 build/main.o
+ .ARM.attributes
+                0x00000052       0x29 build/gamePulse.o
+ .ARM.attributes
+                0x0000007b       0x29 build/MapTransition.o
+ .ARM.attributes
+                0x000000a4       0x29 build/draw.o
+ .ARM.attributes
+                0x000000cd       0x29 build/drawCoinNumber.o
+ .ARM.attributes
+                0x000000f6       0x29 build/jtag.o
+ .ARM.attributes
+                0x0000011f       0x29 build/framebuffer.o
+ .ARM.attributes
+                0x00000148       0x29 build/updateLives.o
+ .ARM.attributes
+                0x00000171       0x29 build/turtle.o
+ .ARM.attributes
+                0x0000019a       0x29 build/drawScores.o
+ .ARM.attributes
+                0x000001c3       0x29 build/drawMap.o
+ .ARM.attributes
+                0x000001ec       0x29 build/game.o
+ .ARM.attributes
+                0x00000215       0x29 build/mushRoom.o
+ .ARM.attributes
+                0x0000023e       0x29 build/marioJumpAndMoveR.o
+ .ARM.attributes
+                0x00000267       0x29 build/marioMove.o
+ .ARM.attributes
+                0x00000290       0x29 build/drawMenu.o
+ .ARM.attributes
+                0x000002b9       0x29 build/drawMap1.o
+ .ARM.attributes
+                0x000002e2       0x29 build/marioJumpAndMoveL.o
+ .ARM.attributes
+                0x0000030b       0x29 build/resetGameMap.o
+ .ARM.attributes
+                0x00000334       0x29 build/data.o
+ .ARM.attributes
+                0x0000035d       0x29 build/updateCoinNumber.o
+ .ARM.attributes
+                0x00000386       0x29 build/controllers.o
+ .ARM.attributes
+                0x000003af       0x29 build/controllers1.o
+ .ARM.attributes
+                0x000003d8       0x29 build/updateScores.o
+ .ARM.attributes
+                0x00000401       0x29 build/drawMap2.o
+ .ARM.attributes
+                0x0000042a       0x29 build/controllers2.o
+ .ARM.attributes
+                0x00000453       0x29 uart.o
+ .ARM.attributes
+                0x0000047c       0x29 gpio.o
+
+.debug_line     0x00000000     0x216d
+ .debug_line    0x00000000       0xb9 build/drawLives.o
+ .debug_line    0x000000b9       0x52 build/main.o
+ .debug_line    0x0000010b       0x86 build/gamePulse.o
+ .debug_line    0x00000191       0x5e build/MapTransition.o
+ .debug_line    0x000001ef       0xb6 build/draw.o
+ .debug_line    0x000002a5      0x117 build/drawCoinNumber.o
+ .debug_line    0x000003bc       0x61 build/jtag.o
+ .debug_line    0x0000041d       0x67 build/framebuffer.o
+ .debug_line    0x00000484       0xc3 build/updateLives.o
+ .debug_line    0x00000547       0xe9 build/turtle.o
+ .debug_line    0x00000630      0x1c5 build/drawScores.o
+ .debug_line    0x000007f5      0x2b1 build/drawMap.o
+ .debug_line    0x00000aa6       0x59 build/game.o
+ .debug_line    0x00000aff      0x124 build/mushRoom.o
+ .debug_line    0x00000c23      0x241 build/marioJumpAndMoveR.o
+ .debug_line    0x00000e64      0x3d6 build/marioMove.o
+ .debug_line    0x0000123a       0x77 build/drawMenu.o
+ .debug_line    0x000012b1      0x2b2 build/drawMap1.o
+ .debug_line    0x00001563      0x245 build/marioJumpAndMoveL.o
+ .debug_line    0x000017a8       0x76 build/resetGameMap.o
+ .debug_line    0x0000181e      0x127 build/updateCoinNumber.o
+ .debug_line    0x00001945      0x10c build/controllers.o
+ .debug_line    0x00001a51       0xa7 build/controllers1.o
+ .debug_line    0x00001af8      0x1e5 build/updateScores.o
+ .debug_line    0x00001cdd      0x2b2 build/drawMap2.o
+ .debug_line    0x00001f8f       0xae build/controllers2.o
+ .debug_line    0x0000203d       0xb7 uart.o
+ .debug_line    0x000020f4       0x79 gpio.o
+
+.debug_info     0x00000000      0xd9e
+ .debug_info    0x00000000       0x7d build/drawLives.o
+ .debug_info    0x0000007d       0x74 build/main.o
+ .debug_info    0x000000f1       0x7d build/gamePulse.o
+ .debug_info    0x0000016e       0x81 build/MapTransition.o
+ .debug_info    0x000001ef       0x78 build/draw.o
+ .debug_info    0x00000267       0x82 build/drawCoinNumber.o
+ .debug_info    0x000002e9       0x78 build/jtag.o
+ .debug_info    0x00000361       0x7f build/framebuffer.o
+ .debug_info    0x000003e0       0x7f build/updateLives.o
+ .debug_info    0x0000045f       0x7a build/turtle.o
+ .debug_info    0x000004d9       0x7e build/drawScores.o
+ .debug_info    0x00000557       0x7b build/drawMap.o
+ .debug_info    0x000005d2       0x78 build/game.o
+ .debug_info    0x0000064a       0x7c build/mushRoom.o
+ .debug_info    0x000006c6       0x85 build/marioJumpAndMoveR.o
+ .debug_info    0x0000074b       0x7d build/marioMove.o
+ .debug_info    0x000007c8       0x7c build/drawMenu.o
+ .debug_info    0x00000844       0x7c build/drawMap1.o
+ .debug_info    0x000008c0       0x85 build/marioJumpAndMoveL.o
+ .debug_info    0x00000945       0x80 build/resetGameMap.o
+ .debug_info    0x000009c5       0x84 build/updateCoinNumber.o
+ .debug_info    0x00000a49       0x7f build/controllers.o
+ .debug_info    0x00000ac8       0x80 build/controllers1.o
+ .debug_info    0x00000b48       0x80 build/updateScores.o
+ .debug_info    0x00000bc8       0x7c build/drawMap2.o
+ .debug_info    0x00000c44       0x80 build/controllers2.o
+ .debug_info    0x00000cc4       0x6d uart.o
+ .debug_info    0x00000d31       0x6d gpio.o
+
+.debug_abbrev   0x00000000      0x22e
+ .debug_abbrev  0x00000000       0x14 build/drawLives.o
+ .debug_abbrev  0x00000014       0x12 build/main.o
+ .debug_abbrev  0x00000026       0x14 build/gamePulse.o
+ .debug_abbrev  0x0000003a       0x14 build/MapTransition.o
+ .debug_abbrev  0x0000004e       0x14 build/draw.o
+ .debug_abbrev  0x00000062       0x14 build/drawCoinNumber.o
+ .debug_abbrev  0x00000076       0x14 build/jtag.o
+ .debug_abbrev  0x0000008a       0x14 build/framebuffer.o
+ .debug_abbrev  0x0000009e       0x14 build/updateLives.o
+ .debug_abbrev  0x000000b2       0x14 build/turtle.o
+ .debug_abbrev  0x000000c6       0x14 build/drawScores.o
+ .debug_abbrev  0x000000da       0x14 build/drawMap.o
+ .debug_abbrev  0x000000ee       0x14 build/game.o
+ .debug_abbrev  0x00000102       0x14 build/mushRoom.o
+ .debug_abbrev  0x00000116       0x14 build/marioJumpAndMoveR.o
+ .debug_abbrev  0x0000012a       0x14 build/marioMove.o
+ .debug_abbrev  0x0000013e       0x14 build/drawMenu.o
+ .debug_abbrev  0x00000152       0x14 build/drawMap1.o
+ .debug_abbrev  0x00000166       0x14 build/marioJumpAndMoveL.o
+ .debug_abbrev  0x0000017a       0x14 build/resetGameMap.o
+ .debug_abbrev  0x0000018e       0x14 build/updateCoinNumber.o
+ .debug_abbrev  0x000001a2       0x14 build/controllers.o
+ .debug_abbrev  0x000001b6       0x14 build/controllers1.o
+ .debug_abbrev  0x000001ca       0x14 build/updateScores.o
+ .debug_abbrev  0x000001de       0x14 build/drawMap2.o
+ .debug_abbrev  0x000001f2       0x14 build/controllers2.o
+ .debug_abbrev  0x00000206       0x14 uart.o
+ .debug_abbrev  0x0000021a       0x14 gpio.o
+
+.debug_aranges  0x00000000      0x388
+ .debug_aranges
+                0x00000000       0x20 build/drawLives.o
+ .debug_aranges
+                0x00000020       0x28 build/main.o
+ .debug_aranges
+                0x00000048       0x20 build/gamePulse.o
+ .debug_aranges
+                0x00000068       0x20 build/MapTransition.o
+ .debug_aranges
+                0x00000088       0x20 build/draw.o
+ .debug_aranges
+                0x000000a8       0x20 build/drawCoinNumber.o
+ .debug_aranges
+                0x000000c8       0x20 build/jtag.o
+ .debug_aranges
+                0x000000e8       0x20 build/framebuffer.o
+ .debug_aranges
+                0x00000108       0x20 build/updateLives.o
+ .debug_aranges
+                0x00000128       0x20 build/turtle.o
+ .debug_aranges
+                0x00000148       0x20 build/drawScores.o
+ .debug_aranges
+                0x00000168       0x20 build/drawMap.o
+ .debug_aranges
+                0x00000188       0x20 build/game.o
+ .debug_aranges
+                0x000001a8       0x20 build/mushRoom.o
+ .debug_aranges
+                0x000001c8       0x20 build/marioJumpAndMoveR.o
+ .debug_aranges
+                0x000001e8       0x20 build/marioMove.o
+ .debug_aranges
+                0x00000208       0x20 build/drawMenu.o
+ .debug_aranges
+                0x00000228       0x20 build/drawMap1.o
+ .debug_aranges
+                0x00000248       0x20 build/marioJumpAndMoveL.o
+ .debug_aranges
+                0x00000268       0x20 build/resetGameMap.o
+ .debug_aranges
+                0x00000288       0x20 build/updateCoinNumber.o
+ .debug_aranges
+                0x000002a8       0x20 build/controllers.o
+ .debug_aranges
+                0x000002c8       0x20 build/controllers1.o
+ .debug_aranges
+                0x000002e8       0x20 build/updateScores.o
+ .debug_aranges
+                0x00000308       0x20 build/drawMap2.o
+ .debug_aranges
+                0x00000328       0x20 build/controllers2.o
+ .debug_aranges
+                0x00000348       0x20 uart.o
+ .debug_aranges
+                0x00000368       0x20 gpio.o
+
+.debug_ranges   0x00000000       0x20
+ .debug_ranges  0x00000000       0x20 build/main.o

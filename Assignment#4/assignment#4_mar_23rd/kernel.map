@@ -1,0 +1,255 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD build/main.o
+LOAD build/jtag.o
+LOAD build/framebuffer.o
+LOAD build/draw.o
+LOAD build/drawMap.o
+LOAD build/game.o
+LOAD build/marioMove.o
+LOAD build/drawMenu.o
+LOAD build/data.o
+LOAD build/controllers.o
+LOAD build/controllers1.o
+LOAD uart.o
+LOAD gpio.o
+
+.init           0x00008000        0x4
+ *(.init)
+ .init          0x00008000        0x4 build/main.o
+                0x00008000                _start
+
+.data           0x00009080       0x70
+ *(.data)
+ .data          0x00009080        0x0 build/main.o
+ .data          0x00009080        0x0 build/jtag.o
+ .data          0x00009080       0x70 build/framebuffer.o
+                0x000090e0                FrameBufferPointer
+ .data          0x000090f0        0x0 build/draw.o
+ .data          0x000090f0        0x0 build/drawMap.o
+ .data          0x000090f0        0x0 build/game.o
+ .data          0x000090f0        0x0 build/marioMove.o
+ .data          0x000090f0        0x0 build/drawMenu.o
+ .data          0x000090f0        0x0 build/data.o
+ .data          0x000090f0        0x0 build/controllers.o
+ .data          0x000090f0        0x0 build/controllers1.o
+ .data          0x000090f0        0x0 uart.o
+ .data          0x000090f0        0x0 gpio.o
+ *.c.o(*)
+
+.igot.plt       0x000090f0        0x0
+ .igot.plt      0x00000000        0x0 build/main.o
+
+.text           0x000090f0   0x18bb74
+ *.c.o(.text)
+ *(.text)
+ .text          0x000090f0       0x1c build/main.o
+ .text          0x0000910c       0x8c build/jtag.o
+                0x0000910c                EnableJTAG
+ .text          0x00009198       0x80 build/framebuffer.o
+                0x00009198                InitFrameBuffer
+ .text          0x00009218       0x74 build/draw.o
+                0x00009218                DrawPixel
+                0x00009238                drawPicture
+ .text          0x0000928c      0x3f8 build/drawMap.o
+                0x0000928c                drawFirstMap
+ .text          0x00009684       0x18 build/game.o
+                0x00009684                StartGame
+ .text          0x0000969c      0x2ec build/marioMove.o
+                0x0000969c                drawMario
+                0x000096c0                marioJump
+                0x0000980c                marioWalkBackward
+                0x000098c0                marioWalkForward
+ .text          0x00009988       0xc8 build/drawMenu.o
+                0x00009988                drawIntroduction
+                0x000099ac                drawIndicatorAtStart
+                0x000099d0                clearIndicatorAtStart
+                0x000099f4                drawIndicatorAtQuit
+                0x00009a18                clearIndicatorAtQuit
+ .text          0x00009a50   0x18ab00 build/data.o
+                0x00009a50                Intro
+                0x00189a50                Indicator
+                0x0018a250                Sky
+                0x0018aa50                Floor
+                0x0018b250                Plant31
+                0x0018ba50                Plant32
+                0x0018c250                Plant33
+                0x0018ca50                Tube41
+                0x0018d250                Tube42
+                0x0018da50                Tube43
+                0x0018e250                Tube44
+                0x0018ea50                Tube45
+                0x0018f250                Tube46
+                0x0018fa50                Block
+                0x00190250                Box
+                0x00190a50                Cloud71
+                0x00191250                Cloud72
+                0x00191a50                Cloud73
+                0x00192250                Cloud74
+                0x00192a50                FirstMap
+                0x00192d50                MarioLeftStand
+                0x00193550                MarioRigntStand
+                0x00193d50                marioJumpRightPicture
+ .text          0x00194550      0x2fc build/controllers.o
+                0x00194550                controller
+                0x001946cc                Init_GPIO
+                0x001946f0                setClock
+                0x00194714                setData
+                0x00194734                WriteClock
+                0x00194754                WriteLatch
+                0x00194774                ReadData
+                0x0019479c                Wait
+                0x001947bc                Read_SNES
+ .text          0x0019484c      0x188 build/controllers1.o
+                0x0019484c                controller1
+ .text          0x001949d4      0x1b8 uart.o
+                0x001949d4                InitUART
+                0x00194a94                PutCharUART
+                0x00194ab0                GetCharUART
+                0x00194acc                WriteStringUART
+                0x00194afc                ReadLineUART
+ .text          0x00194b8c       0xd8 gpio.o
+                0x00194b8c                GetGpioAddress
+                0x00194b94                SetGpioFunction
+                0x00194be0                SetGpio
+                0x00194c1c                GetGpio
+OUTPUT(build/output.elf elf32-littlearm)
+
+.glue_7         0x00194c64        0x0
+ .glue_7        0x00000000        0x0 linker stubs
+
+.glue_7t        0x00194c64        0x0
+ .glue_7t       0x00000000        0x0 linker stubs
+
+.vfp11_veneer   0x00194c64        0x0
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+
+.v4_bx          0x00194c64        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.iplt           0x00194c64        0x0
+ .iplt          0x00000000        0x0 build/main.o
+
+.rel.dyn        0x00194c64        0x0
+ .rel.iplt      0x00000000        0x0 build/main.o
+
+.bss            0x00194c64        0x0
+ .bss           0x00194c64        0x0 build/main.o
+ .bss           0x00194c64        0x0 build/jtag.o
+ .bss           0x00194c64        0x0 build/framebuffer.o
+ .bss           0x00194c64        0x0 build/draw.o
+ .bss           0x00194c64        0x0 build/drawMap.o
+ .bss           0x00194c64        0x0 build/game.o
+ .bss           0x00194c64        0x0 build/marioMove.o
+ .bss           0x00194c64        0x0 build/drawMenu.o
+ .bss           0x00194c64        0x0 build/data.o
+ .bss           0x00194c64        0x0 build/controllers.o
+ .bss           0x00194c64        0x0 build/controllers1.o
+ .bss           0x00194c64        0x0 uart.o
+ .bss           0x00194c64        0x0 gpio.o
+
+.ARM.attributes
+                0x00000000       0x29
+ .ARM.attributes
+                0x00000000       0x29 build/main.o
+ .ARM.attributes
+                0x00000029       0x29 build/jtag.o
+ .ARM.attributes
+                0x00000052       0x29 build/framebuffer.o
+ .ARM.attributes
+                0x0000007b       0x29 build/draw.o
+ .ARM.attributes
+                0x000000a4       0x29 build/drawMap.o
+ .ARM.attributes
+                0x000000cd       0x29 build/game.o
+ .ARM.attributes
+                0x000000f6       0x29 build/marioMove.o
+ .ARM.attributes
+                0x0000011f       0x29 build/drawMenu.o
+ .ARM.attributes
+                0x00000148       0x29 build/data.o
+ .ARM.attributes
+                0x00000171       0x29 build/controllers.o
+ .ARM.attributes
+                0x0000019a       0x29 build/controllers1.o
+ .ARM.attributes
+                0x000001c3       0x29 uart.o
+ .ARM.attributes
+                0x000001ec       0x29 gpio.o
+
+.debug_line     0x00000000      0x774
+ .debug_line    0x00000000       0x52 build/main.o
+ .debug_line    0x00000052       0x61 build/jtag.o
+ .debug_line    0x000000b3       0x67 build/framebuffer.o
+ .debug_line    0x0000011a       0x5b build/draw.o
+ .debug_line    0x00000175      0x160 build/drawMap.o
+ .debug_line    0x000002d5       0x40 build/game.o
+ .debug_line    0x00000315      0x106 build/marioMove.o
+ .debug_line    0x0000041b       0x77 build/drawMenu.o
+ .debug_line    0x00000492      0x10b build/controllers.o
+ .debug_line    0x0000059d       0xa7 build/controllers1.o
+ .debug_line    0x00000644       0xb7 uart.o
+ .debug_line    0x000006fb       0x79 gpio.o
+
+.debug_info     0x00000000      0x5ee
+ .debug_info    0x00000000       0x7b build/main.o
+ .debug_info    0x0000007b       0x7f build/jtag.o
+ .debug_info    0x000000fa       0x86 build/framebuffer.o
+ .debug_info    0x00000180       0x7f build/draw.o
+ .debug_info    0x000001ff       0x82 build/drawMap.o
+ .debug_info    0x00000281       0x7f build/game.o
+ .debug_info    0x00000300       0x84 build/marioMove.o
+ .debug_info    0x00000384       0x83 build/drawMenu.o
+ .debug_info    0x00000407       0x86 build/controllers.o
+ .debug_info    0x0000048d       0x87 build/controllers1.o
+ .debug_info    0x00000514       0x6d uart.o
+ .debug_info    0x00000581       0x6d gpio.o
+
+.debug_abbrev   0x00000000       0xee
+ .debug_abbrev  0x00000000       0x12 build/main.o
+ .debug_abbrev  0x00000012       0x14 build/jtag.o
+ .debug_abbrev  0x00000026       0x14 build/framebuffer.o
+ .debug_abbrev  0x0000003a       0x14 build/draw.o
+ .debug_abbrev  0x0000004e       0x14 build/drawMap.o
+ .debug_abbrev  0x00000062       0x14 build/game.o
+ .debug_abbrev  0x00000076       0x14 build/marioMove.o
+ .debug_abbrev  0x0000008a       0x14 build/drawMenu.o
+ .debug_abbrev  0x0000009e       0x14 build/controllers.o
+ .debug_abbrev  0x000000b2       0x14 build/controllers1.o
+ .debug_abbrev  0x000000c6       0x14 uart.o
+ .debug_abbrev  0x000000da       0x14 gpio.o
+
+.debug_aranges  0x00000000      0x188
+ .debug_aranges
+                0x00000000       0x28 build/main.o
+ .debug_aranges
+                0x00000028       0x20 build/jtag.o
+ .debug_aranges
+                0x00000048       0x20 build/framebuffer.o
+ .debug_aranges
+                0x00000068       0x20 build/draw.o
+ .debug_aranges
+                0x00000088       0x20 build/drawMap.o
+ .debug_aranges
+                0x000000a8       0x20 build/game.o
+ .debug_aranges
+                0x000000c8       0x20 build/marioMove.o
+ .debug_aranges
+                0x000000e8       0x20 build/drawMenu.o
+ .debug_aranges
+                0x00000108       0x20 build/controllers.o
+ .debug_aranges
+                0x00000128       0x20 build/controllers1.o
+ .debug_aranges
+                0x00000148       0x20 uart.o
+ .debug_aranges
+                0x00000168       0x20 gpio.o
+
+.debug_ranges   0x00000000       0x20
+ .debug_ranges  0x00000000       0x20 build/main.o
